@@ -5,20 +5,26 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import DashboardPage from "./pages/DashboardPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import LoginPage from "./pages/LoginPage";
+import Container from "./pages/layout/Container";
 
 function App() {
   const router = createBrowserRouter([
-    {
-      path: "/",
-      element: <CourseListPage />,
-    },
     {
       path: "/login",
       element: <LoginPage />,
     },
     {
-      path: "/courses/:courseId",
-      element: <CourseDetailPage />,
+      element: <Container />,
+      children: [
+        {
+          path: "/",
+          element: <CourseListPage />,
+        },
+        {
+          path: "/courses/:courseId",
+          element: <CourseDetailPage />,
+        },
+      ],
     },
     {
       path: "/dashboard",
@@ -30,9 +36,9 @@ function App() {
     },
   ]);
   return (
-    <>
+    <div className="min-h-screen">
       <RouterProvider router={router} />
-    </>
+    </div>
   );
 }
 
