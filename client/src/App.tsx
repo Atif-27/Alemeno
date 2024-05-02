@@ -4,12 +4,17 @@ import CourseListPage from "./pages/CourseListPage";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import DashboardPage from "./pages/DashboardPage";
 import NotFoundPage from "./pages/NotFoundPage";
+import LoginPage from "./pages/LoginPage";
 
 function App() {
   const router = createBrowserRouter([
     {
       path: "/",
       element: <CourseListPage />,
+    },
+    {
+      path: "/login",
+      element: <LoginPage />,
     },
     {
       path: "/courses/:courseId",
