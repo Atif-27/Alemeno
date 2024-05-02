@@ -1,9 +1,6 @@
-"use client";
-import { FaUnlockKeyhole } from "react-icons/fa6";
 import { MdDataUsage } from "react-icons/md";
 import { IoSettings } from "react-icons/io5";
 
-import { SiGoogledocs } from "react-icons/si";
 import { FaTent } from "react-icons/fa6";
 import { IoArrowBackOutline } from "react-icons/io5";
 import { Link } from "react-router-dom";
