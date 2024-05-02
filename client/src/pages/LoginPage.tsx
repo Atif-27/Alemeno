@@ -1,6 +1,8 @@
 import { useState } from "react";
 // import useRedirectPath from "@/hooks/useRedirectPath";
 import { Link, redirect } from "react-router-dom";
+import { useAppDispatch } from "../hooks/reduxHooks";
+import { login } from "../store/user";
 const initialFieldState = {
   username: "test",
   email: "test07@gmail.com",
@@ -8,13 +10,13 @@ const initialFieldState = {
 };
 function LoginPage() {
   const [fields, setFields] = useState(initialFieldState);
-
+  const dispatch = useAppDispatch();
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     setFields({ ...fields, [e.target.id]: e.target.value });
   }
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    console.log(fields);
+    dispatch(login({ email: fields.email, username: fields.username }));
   }
   return (
     <section className=" lg:grid lg:grid-cols-2  h-screen w-full ">

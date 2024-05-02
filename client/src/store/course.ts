@@ -4,6 +4,19 @@ import axios from "axios";
 interface Course {
   id: number;
   name: string;
+  instructor: string;
+  description: string;
+  enrollmentStatus: string;
+  thumbnail: string;
+  duration: string;
+  schedule: string;
+  location: string;
+  prerequisites: string[];
+  syllabus: {
+    week: number;
+    topic: string;
+    content: string;
+  }[];
   likes: number;
 }
 
@@ -29,7 +42,7 @@ const initialState: CourseState = {
 export const fetchCourses = createAsyncThunk(
   "courses/fetchCourses",
   async () => {
-    const response = await axios.get("http://your-api-url/courses");
+    const response = await axios.get("http://localhost:8000/courses");
     return response.data as Course[];
   }
 );
@@ -38,7 +51,9 @@ export const fetchCourses = createAsyncThunk(
 export const fetchCourseById = createAsyncThunk(
   "courses/fetchCourseById",
   async (courseId: number) => {
-    const response = await axios.get(`http://your-api-url/courses/${courseId}`);
+    const response = await axios.get(
+      `http://localhost:8000/courses/${courseId}`
+    );
     return response.data as Course;
   }
 );
