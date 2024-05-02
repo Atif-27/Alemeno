@@ -22,14 +22,14 @@ const Navbar = () => {
     }
   }
   return (
-    <div className="navbar bg-base-100 md:px-20 py-4">
-      <div className="flex-1 flex gap-10 md:gap-20">
-        <a className="btn btn-ghost text-xl">Alemeno</a>
+    <div className="navbar bg-base-100 md:px-20 py-6 max-md:py-3 ">
+      <div className="flex-1 flex gap-5 md:gap-20">
+        <a className="btn btn-ghost text-xl max-md:text-sm">Alemeno</a>
         <form className="" onSubmit={handleSubmit}>
           <input
             type="text"
             placeholder="Search"
-            className="input input-bordered md:min-w-96  max-md:w-auto"
+            className="input input-bordered md:min-w-96  max-md:w-28"
             ref={inputRef}
           />
         </form>
