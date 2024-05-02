@@ -1,9 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-interface userDetailType {
-  username: string;
-  email: string;
-}
+import { userDetailType } from "../types/userType";
 
 interface User {
   userDetail: userDetailType | null;

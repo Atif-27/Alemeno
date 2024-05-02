@@ -1,28 +1,9 @@
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-
-interface Course {
-  id: number;
-  name: string;
-  instructor: string;
-  description: string;
-  enrollmentStatus: string;
-  thumbnail: string;
-  duration: string;
-  schedule: string;
-  location: string;
-  prerequisites: string[];
-  syllabus: {
-    week: number;
-    topic: string;
-    content: string;
-  }[];
-  likes: number;
-}
-
+import { CourseType } from "../types/courseType";
 interface CourseState {
-  courses: Course[];
-  courseDetail: Course | null;
+  courses: CourseType[];
+  courseDetail: CourseType | null;
   likedCourses: number[];
   enrolledCourses: number[];
   status: "idle" | "loading" | "succeeded" | "failed";
@@ -43,7 +24,7 @@ export const fetchCourses = createAsyncThunk(
   "courses/fetchCourses",
   async () => {
     const response = await axios.get("http://localhost:8000/courses");
-    return response.data as Course[];
+    return response.data as CourseType[];
   }
 );
 
@@ -52,9 +33,9 @@ export const fetchCourseById = createAsyncThunk(
   "courses/fetchCourseById",
   async (courseId: number) => {
     const response = await axios.get(
-      `http://localhost:8000/courses/${courseId}`
+      `http://localhost:8000/courses?id=${courseId}`
     );
-    return response.data as Course;
+    return response.data[0] as CourseType;
   }
 );
 
@@ -74,12 +55,10 @@ const courseSlice = createSlice({
       }
       localStorage.setItem("likedCourses", JSON.stringify(state.likedCourses));
     },
-    toggleEnrollment: (state, action: PayloadAction<number>) => {
+    enrollCourse: (state, action: PayloadAction<number>) => {
       const index = state.enrolledCourses.indexOf(action.payload);
       if (index === -1) {
         state.enrolledCourses.push(action.payload);
-      } else {
-        state.enrolledCourses.splice(index, 1);
       }
       localStorage.setItem(
         "enrolledCourses",
@@ -107,5 +86,5 @@ const courseSlice = createSlice({
   },
 });
 
-export const { toggleLikeCourse, toggleEnrollment } = courseSlice.actions;
+export const { toggleLikeCourse, enrollCourse } = courseSlice.actions;
 export default courseSlice.reducer;
