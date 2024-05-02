@@ -43,6 +43,9 @@ const courseSlice = createSlice({
   name: "courses",
   initialState,
   reducers: {
+    clearCourses: (state) => {
+      state.courses = [];
+    },
     toggleLikeCourse: (state, action: PayloadAction<number>) => {
       const index = state.likedCourses.indexOf(action.payload);
       if (index === -1) {
@@ -86,5 +89,6 @@ const courseSlice = createSlice({
   },
 });
 
-export const { toggleLikeCourse, enrollCourse } = courseSlice.actions;
+export const { toggleLikeCourse, enrollCourse, clearCourses } =
+  courseSlice.actions;
 export default courseSlice.reducer;

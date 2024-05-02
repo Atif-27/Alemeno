@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import { useLocation, useNavigate } from "react-router";
-import { useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -22,14 +22,19 @@ const Navbar = () => {
     }
   }
   return (
-    <div className="navbar bg-base-100 md:px-20 py-6 max-md:py-3 ">
-      <div className="flex-1 flex gap-5 md:gap-20">
-        <a className="btn btn-ghost text-xl max-md:text-sm">Alemeno</a>
+    <div className="navbar bg-base-100 md:px-20 py-6 max-md:py-3 sticky top-0 z-10  space-y-3 ">
+      <div className="flex-1 flex gap-4 md:gap-20">
+        <Link
+          to={"/"}
+          className="btn btn-ghost text-xl max-md:text-sm max-md:hidden"
+        >
+          Alemeno
+        </Link>
         <form className="" onSubmit={handleSubmit}>
           <input
             type="text"
             placeholder="Search"
-            className="input input-bordered md:min-w-96  max-md:w-28"
+            className="input input-bordered md:min-w-96  max-md:min-w-24 max-lg:min-w-16 max-md:scale-90  max-md:h-10"
             ref={inputRef}
           />
         </form>
