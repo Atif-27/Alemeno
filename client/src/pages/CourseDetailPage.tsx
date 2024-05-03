@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useParams } from "react-router";
 import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
 import { fetchCourseById } from "../store/course";
+import CourseDetailCard from "./CourseDetailCard";
 // import CourseDetailCard from "./CourseDetailCard";
 
 const CourseDetailPage = () => {
@@ -9,11 +10,11 @@ const CourseDetailPage = () => {
   console.log(courseId);
 
   const dispatch = useAppDispatch();
-  const courseDetail = useAppSelector((state) => state.course.courseDetail);
+  const courseDetail = useAppSelector((state) => state.course.selectedCourse);
   console.log(courseDetail);
 
   useEffect(() => {
-    dispatch(fetchCourseById(Number(courseId)));
+    dispatch(fetchCourseById(courseId as string));
   }, [courseId, dispatch]);
 
   return (
@@ -21,9 +22,9 @@ const CourseDetailPage = () => {
       <header className=" bg-cyan-50  max-h-[20rem]">
         <div className=" py-20 px-40 max-md:px-10 flex justify-between gap-10     ">
           <div>
-            <h2 className="text-5xl font-bold">{courseDetail?.name}</h2>
+            <h2 className="text-5xl font-bold">{courseDetail?.title}</h2>
             <p>{courseDetail?.description}</p>
-            <div className="rating">
+            {/* <div className="rating">
               <input
                 type="radio"
                 name="rating-2"
@@ -50,10 +51,13 @@ const CourseDetailPage = () => {
                 name="rating-2"
                 className="mask mask-star-2 bg-orange-400"
               />
-            </div>
+            </div> */}
           </div>
           <div className="card w-96  shadow-xl bg-gray-400 text-black max-md:hidden">
-            {/* <CourseDetailCard /> */}
+            <CourseDetailCard
+              avatar={courseDetail?.thumbnail as string}
+              price={courseDetail?.price as number}
+            />
           </div>
         </div>
       </header>
@@ -63,7 +67,7 @@ const CourseDetailPage = () => {
 
       <main className="py-20 px-40 max-md:px-10 ">
         <div>
-          <h3>Instructor: {courseDetail?.instructor}</h3>
+          <h3>Instructor: {courseDetail?.instructor.name}</h3>
           <p>Duration: {courseDetail?.duration} weeks</p>
           <p>Schedule: {courseDetail?.schedule}</p>
           <p>Location: {courseDetail?.location}</p>
