@@ -1,94 +1,169 @@
-import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
+// src/features/courses/courseSlice.ts
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { CourseType } from "../types/courseType";
+import { Course, Enrollment } from "../types/courseType";
+
 interface CourseState {
-  courses: CourseType[];
-  courseDetail: CourseType | null;
-  likedCourses: number[];
-  enrolledCourses: number[];
+  courses: Course[];
+  enrolledCourses: Enrollment[];
+  selectedCourse: Course | null;
   status: "idle" | "loading" | "succeeded" | "failed";
   error: string | null;
 }
 
 const initialState: CourseState = {
-  courses: JSON.parse(localStorage.getItem("courses") || "[]"),
-  courseDetail: null,
-  likedCourses: JSON.parse(localStorage.getItem("likedCourses") || "[]"),
-  enrolledCourses: JSON.parse(localStorage.getItem("enrolledCourses") || "[]"),
+  courses: [],
+  enrolledCourses: [],
+  selectedCourse: null,
   status: "idle",
   error: null,
 };
 
-// Async thunk for fetching all courses
+//! Fetch All Courses
 export const fetchCourses = createAsyncThunk(
   "courses/fetchCourses",
   async () => {
-    const response = await axios.get("http://localhost:8000/courses");
-    return response.data as CourseType[];
+    const response = await axios.get("http://localhost:8080/api/courses");
+    return response.data as Course[];
   }
 );
 
-// Async thunk for fetching a course by ID
+//! Fetch Course By ID
 export const fetchCourseById = createAsyncThunk(
   "courses/fetchCourseById",
-  async (courseId: number) => {
-    const response = await axios.get(
-      `http://localhost:8000/courses?id=${courseId}`
-    );
-    return response.data[0] as CourseType;
+  async (id: string) => {
+    const response = await axios.get(`http://localhost:8080/api/courses/${id}`);
+    return response.data as Course;
   }
 );
 
+//! Fetching enrolled courses with course data and progress
+export const fetchEnrolledCourses = createAsyncThunk(
+  "courses/fetchEnrolledCourses",
+  async () => {
+    const response = await axios.get(
+      "http://localhost:8080/api/enrollments/my-courses",
+      {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      }
+    );
+    return response.data as Enrollment[];
+  }
+);
+
+// ! Enroll in a course
+export const enrollInCourse = createAsyncThunk(
+  "courses/enrollInCourse",
+  async (courseId: string) => {
+    const response = await axios.post("http://localhost:8080/api/enrollments", {
+      courseId,
+    });
+    return response.data as Enrollment;
+  }
+);
+
+// !Update Progress
+export const updateProgress = createAsyncThunk(
+  "courses/updateProgress",
+  async ({
+    enrollmentId,
+    week,
+    completed,
+  }: {
+    enrollmentId: string;
+    week: number;
+    completed: boolean;
+  }) => {
+    const response = await axios.patch(
+      `/api/enrollments/${enrollmentId}/progress`,
+      {
+        week,
+        completed,
+      }
+    );
+    return response.data;
+  }
+);
+
+// ! Mark all weeks as completed
+export const markAllAsCompleted = createAsyncThunk(
+  "courses/markAllAsCompleted",
+  async (enrollmentId: string) => {
+    const response = await axios.patch(
+      `/api/enrollments/${enrollmentId}/complete-all`
+    );
+    return response.data;
+  }
+);
+
+// * Course Slice
 const courseSlice = createSlice({
   name: "courses",
   initialState,
-  reducers: {
-    clearCourses: (state) => {
-      state.courses = [];
-    },
-    toggleLikeCourse: (state, action: PayloadAction<number>) => {
-      const index = state.likedCourses.indexOf(action.payload);
-      if (index === -1) {
-        state.likedCourses.push(action.payload);
-      } else {
-        state.likedCourses.splice(index, 1);
-      }
-      if (state.courseDetail?.id === action.payload) {
-        state.courseDetail.likes += index === -1 ? 1 : -1;
-      }
-      localStorage.setItem("likedCourses", JSON.stringify(state.likedCourses));
-    },
-    enrollCourse: (state, action: PayloadAction<number>) => {
-      const index = state.enrolledCourses.indexOf(action.payload);
-      if (index === -1) {
-        state.enrolledCourses.push(action.payload);
-      }
-      localStorage.setItem(
-        "enrolledCourses",
-        JSON.stringify(state.enrolledCourses)
-      );
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(fetchCourses.pending, (state) => {
         state.status = "loading";
       })
       .addCase(fetchCourses.fulfilled, (state, action) => {
-        state.status = "succeeded";
         state.courses = action.payload;
-        localStorage.setItem("courses", JSON.stringify(state.courses));
+        state.status = "succeeded";
       })
       .addCase(fetchCourses.rejected, (state, action) => {
         state.status = "failed";
-        state.error = action.error.message || null;
+        state.error = action.error.message || "Failed to fetch courses";
+      })
+      .addCase(fetchCourseById.pending, (state) => {
+        state.status = "loading";
       })
       .addCase(fetchCourseById.fulfilled, (state, action) => {
-        state.courseDetail = action.payload;
+        state.selectedCourse = action.payload;
+        state.status = "succeeded";
+      })
+      .addCase(fetchCourseById.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.error.message || "Failed to fetch course details";
+      })
+      .addCase(fetchEnrolledCourses.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(fetchEnrolledCourses.fulfilled, (state, action) => {
+        state.enrolledCourses = action.payload;
+        state.status = "succeeded";
+      })
+      .addCase(fetchEnrolledCourses.rejected, (state, action) => {
+        state.status = "failed";
+        state.error =
+          action.error.message || "Failed to fetch enrolled courses";
+      })
+      .addCase(enrollInCourse.fulfilled, (state, action) => {
+        state.enrolledCourses.push(action.payload);
+      })
+      .addCase(updateProgress.fulfilled, (state, action) => {
+        const { enrollmentId, week, completed } = action.payload;
+        const enrollment = state.enrolledCourses.find(
+          (enrolled) => enrolled.course._id === enrollmentId
+        );
+        if (enrollment) {
+          const item = enrollment.progress.find((p) => p.week === week);
+          if (item) {
+            item.completed = completed;
+          }
+        }
+      })
+      .addCase(markAllAsCompleted.fulfilled, (state, action) => {
+        const { enrollmentId } = action.payload;
+        const enrollment = state.enrolledCourses.find(
+          (enrolled) => enrolled.course._id === enrollmentId
+        );
+        if (enrollment) {
+          enrollment.progress.forEach((item) => {
+            item.completed = true;
+          });
+        }
       });
   },
 });
 
-export const { toggleLikeCourse, enrollCourse, clearCourses } =
-  courseSlice.actions;
 export default courseSlice.reducer;
