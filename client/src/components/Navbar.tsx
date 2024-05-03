@@ -11,7 +11,7 @@ const Navbar = () => {
     const query = inputRef.current?.value;
     if (query === "") {
       navigate("/");
-      window.location.reload();
+      return;
     }
     if (location.pathname === "/" && query) {
       navigate("/?q=" + query);
@@ -20,7 +20,7 @@ const Navbar = () => {
     }
   }
   return (
-    <div className="navbar bg-base-100 md:px-20 py-6 max-md:py-3 sticky top-0 z-10  space-y-3 ">
+    <div className="navbar bg-base-100 md:px-20 py-3 max-md:py-3 sticky top-0 z-10  space-y-3 ">
       <div className="flex-1 flex gap-4 md:gap-20">
         <Link
           to={"/"}
