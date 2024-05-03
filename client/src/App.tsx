@@ -6,6 +6,7 @@ import DashboardPage from "./pages/DashboardPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import LoginPage from "./pages/LoginPage";
 import Container from "./pages/layout/Container";
+import MyCourses from "./pages/MyCourses";
 
 function App() {
   const router = createBrowserRouter([
@@ -29,6 +30,7 @@ function App() {
     {
       path: "/dashboard",
       element: <DashboardPage />,
+      children: [{ path: "courses", element: <MyCourses /> }],
     },
     {
       path: "*",
