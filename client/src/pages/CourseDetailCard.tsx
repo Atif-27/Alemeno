@@ -1,26 +1,26 @@
-import { useParams } from "react-router";
 import LoggedIn from "../components/layout.tsx/LoggedIn";
-import { useAppDispatch } from "../hooks/reduxHooks";
-import { enrollCourse } from "../store/course";
+// import { enrollCourse } from "../store/course";
 
-const CourseDetailCard = () => {
-  const dispatch = useAppDispatch();
-  const { courseId } = useParams<{ courseId: string }>();
+const CourseDetailCard = ({
+  avatar,
+  price,
+}: {
+  avatar: string;
+  price: number;
+}) => {
+  // const dispatch = useAppDispatch();
+  // const { courseId } = useParams<{ courseId: string }>();
   function handleClick() {
-    dispatch(enrollCourse(Number(courseId)));
+    // dispatch(enrollCourse(Number(courseId)));
   }
   return (
     <div>
       <figure>
-        <img
-          src="https://res.cloudinary.com/dqvzda5xi/image/upload/v1713455490/tqebk76mmdnzaumxwqat.png"
-          alt="Shoes"
-        />
+        <img src={avatar} alt="avatar" />
       </figure>
       <div className="card-body">
         <h2 className="card-title">
-          Shoes!
-          <div className="badge badge-secondary">NEW</div>
+          {price} $<div className="badge badge-secondary">NEW</div>
         </h2>
         <p>If a dog chews shoes whose shoes does he choose?</p>
         <div className="card-actions ">

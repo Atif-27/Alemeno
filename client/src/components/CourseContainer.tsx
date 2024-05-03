@@ -1,16 +1,15 @@
 import { useSearchParams } from "react-router-dom";
 import CourseCard from "./CourseCard";
-import { Key, useEffect, useState } from "react";
-import { CourseType } from "../types/courseType";
-import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
+import { useEffect, useState } from "react";
+import { Course } from "../types/courseType";
+import { useAppSelector } from "../hooks/reduxHooks";
 import NotFound from "../assets/NotFound.jpg";
 
-const CourseContainer = ({ courses }: { courses: CourseType[] }) => {
+const CourseContainer = ({ courses }: { courses: Course[] }) => {
   const [searchParams] = useSearchParams();
-  const [editedCourses, setEditedCourses] = useState<CourseType[]>([]);
+  const [editedCourses, setEditedCourses] = useState<Course[]>([]);
   const sort = searchParams.get("sort");
   const query = searchParams.get("q");
-  const dispatch = useAppDispatch();
   const isLoading = useAppSelector(
     (state) => state.course.status === "loading"
   );
@@ -18,14 +17,16 @@ const CourseContainer = ({ courses }: { courses: CourseType[] }) => {
   useEffect(() => {
     let filteredCourses = [...courses];
 
+    // Filter courses based on search query -> Name and Instructor name
     if (query) {
       filteredCourses = filteredCourses.filter(
         (course) =>
-          course.name.toLowerCase().includes(query.toLowerCase()) ||
-          course.instructor.toLowerCase().includes(query.toLowerCase())
+          course.title.toLowerCase().includes(query.toLowerCase()) ||
+          course.instructor.name.toLowerCase().includes(query.toLowerCase())
       );
     }
 
+    // Sort courses based on sort query
     switch (sort) {
       case "rating":
         filteredCourses.sort((a, b) => b.rating - a.rating);
@@ -65,8 +66,8 @@ const CourseContainer = ({ courses }: { courses: CourseType[] }) => {
   return (
     <div className="flex flex-col gap-8">
       {!isLoading &&
-        editedCourses.map((course: CourseType) => (
-          <div key={course.id}>
+        editedCourses.map((course: Course) => (
+          <div key={course._id}>
             <CourseCard course={course} />
           </div>
         ))}
