@@ -10,6 +10,7 @@ import {
 
 import { filters, sortOptions, subCategories } from "../constants/courseList";
 import { MobileFilter } from "./MobileFilter";
+import { useSearchParams } from "react-router-dom";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
@@ -21,6 +22,12 @@ export default function CourseFilter({
   children: React.ReactNode;
 }) {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const handleFilterChange = (filterId, label) => {
+    if (searchParams.get(filterId) === label) searchParams.delete(filterId);
+    else searchParams.set(filterId, label);
+    setSearchParams(Object.fromEntries(searchParams));
+  };
 
   return (
     <div className="bg-slate-800 text-white">
@@ -63,8 +70,10 @@ export default function CourseFilter({
                       {sortOptions.map((option) => (
                         <Menu.Item key={option.name}>
                           {({ active }) => (
-                            <a
-                              href={option.href}
+                            <div
+                              onClick={() =>
+                                handleFilterChange("sort", option.href)
+                              }
                               className={classNames(
                                 option.current
                                   ? "font-medium text-white"
@@ -74,7 +83,7 @@ export default function CourseFilter({
                               )}
                             >
                               {option.name}
-                            </a>
+                            </div>
                           )}
                         </Menu.Item>
                       ))}
@@ -123,7 +132,7 @@ export default function CourseFilter({
                     {({ open }) => (
                       <>
                         <h3 className="-my-3 flow-root">
-                          <Disclosure.Button className="flex w-full items-center justify-between bg-slate-800 text-white py-3 text-sm text-white hover:text-gray-500">
+                          <Disclosure.Button className="flex w-full items-center justify-between bg-slate-800 py-3 text-sm text-white hover:text-gray-500">
                             <span className="font-medium text-white">
                               {section.name}
                             </span>
@@ -152,9 +161,14 @@ export default function CourseFilter({
                                 <input
                                   id={`filter-${section.id}-${optionIdx}`}
                                   name={`${section.id}[]`}
-                                  defaultValue={option.value}
                                   type="checkbox"
-                                  defaultChecked={option.checked}
+                                  checked={
+                                    searchParams.get(section.id) ===
+                                    option.label
+                                  }
+                                  onChange={(e) =>
+                                    handleFilterChange(section.id, option.label)
+                                  }
                                   className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
                                 />
                                 <label

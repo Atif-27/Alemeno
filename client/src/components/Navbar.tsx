@@ -1,11 +1,10 @@
 import { useRef } from "react";
 import { useLocation, useNavigate } from "react-router";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [searchParams, setSearchParams] = useSearchParams();
   const inputRef = useRef<HTMLInputElement | null>(null);
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -15,8 +14,7 @@ const Navbar = () => {
       window.location.reload();
     }
     if (location.pathname === "/" && query) {
-      searchParams.set("q", query);
-      setSearchParams(Object.fromEntries(searchParams));
+      navigate("/?q=" + query);
     } else {
       navigate("/?q=" + query);
     }
