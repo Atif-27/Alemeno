@@ -60,7 +60,7 @@ const CourseCard = ({
               {course.price} $
             </p>
             <div className="rating">
-              {Array.from({ length: 5 }, (_, i) => 2).map((_, index) => (
+              {Array.from({ length: 5 }, () => 2).map((_, index) => (
                 <input
                   type="radio"
                   name={course._id}

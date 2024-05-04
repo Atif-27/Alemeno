@@ -6,8 +6,7 @@ import CourseDetailCard from "./CourseDetailCard";
 import InstructorCard from "../components/InstructorCard";
 import PageHeading from "../components/PageHeading";
 import SectionHeading from "../components/SectionHeading";
-import { MdMenuBook, MdSlowMotionVideo } from "react-icons/md";
-import { FiBookOpen } from "react-icons/fi";
+import { MdSlowMotionVideo } from "react-icons/md";
 import { IoBookOutline } from "react-icons/io5";
 // import CourseDetailCard from "./CourseDetailCard";
 
@@ -37,7 +36,17 @@ const CourseDetailPage = () => {
             </p>
             <div className="flex gap-4 items-center mt-8 max-md:mt-4">
               <div className="flex gap-4 items-center max-md:flex-col  max-md:items-start text-white  opacity-90">
-                <p className="text-xl">Rating: 5 </p>
+                <div className="rating">
+                  {Array.from({ length: 5 }, () => 2).map((_, index) => (
+                    <input
+                      type="radio"
+                      name={courseDetail?._id}
+                      className="mask mask-star-2 bg-orange-400"
+                      key={index}
+                      checked={index === Number(courseDetail?.rating) - 1} // Set checked if index is less than or equal to course rating minus 1
+                    />
+                  ))}
+                </div>
                 <p className="text-xl">
                   Last Updated:{" "}
                   {courseDetail?.updatedAt
