@@ -2,6 +2,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { Course, Enrollment } from "../types/courseType";
+import { toast } from "react-toastify";
+import axiosInstance from "../helper/axiosInstance";
 
 interface CourseState {
   courses: Course[];
@@ -41,14 +43,7 @@ export const fetchCourseById = createAsyncThunk(
 export const fetchEnrolledCourses = createAsyncThunk(
   "courses/fetchEnrolledCourses",
   async () => {
-    const response = await axios.get(
-      "http://localhost:8080/api/enrollments/my-courses",
-      {
-        headers: {
-          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjM0ZmM0YTlkOTNkMWJmODI2MjY2MjIiLCJpYXQiOjE3MTQ4MDM2NjMsImV4cCI6MTcxNDg5MDA2M30.O2cOLVRIED_td7tdd-JqFiMY2KPticeQA5P3NfTg8ao`,
-        },
-      }
-    );
+    const response = await axiosInstance.get("/enrollments/my-courses");
     return response.data as Enrollment[];
   }
 );
@@ -57,17 +52,9 @@ export const fetchEnrolledCourses = createAsyncThunk(
 export const enrollInCourse = createAsyncThunk(
   "courses/enrollInCourse",
   async (courseId: string) => {
-    const response = await axios.post(
-      "http://localhost:8080/api/enrollments/enroll",
-      {
-        courseId,
-      },
-      {
-        headers: {
-          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjM0ZmM0YTlkOTNkMWJmODI2MjY2MjIiLCJpYXQiOjE3MTQ4MDM2NjMsImV4cCI6MTcxNDg5MDA2M30.O2cOLVRIED_td7tdd-JqFiMY2KPticeQA5P3NfTg8ao`,
-        },
-      }
-    );
+    const response = await axiosInstance.post("/enrollments/enroll", {
+      courseId,
+    });
 
     return response.data as Enrollment;
   }
@@ -85,19 +72,11 @@ export const updateProgress = createAsyncThunk(
     week: number;
     completed: boolean;
   }) => {
-    await axios.patch(
-      `http://localhost:8080/api/enrollments/progress`,
-      {
-        courseId,
-        week,
-        completed,
-      },
-      {
-        headers: {
-          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjM0ZmM0YTlkOTNkMWJmODI2MjY2MjIiLCJpYXQiOjE3MTQ4MDM2NjMsImV4cCI6MTcxNDg5MDA2M30.O2cOLVRIED_td7tdd-JqFiMY2KPticeQA5P3NfTg8ao`,
-        },
-      }
-    );
+    await axiosInstance.patch(`/enrollments/progress`, {
+      courseId,
+      week,
+      completed,
+    });
     return {
       courseId,
       week,
@@ -110,15 +89,7 @@ export const updateProgress = createAsyncThunk(
 export const markAllAsCompleted = createAsyncThunk(
   "courses/markAllAsCompleted",
   async (courseId: string) => {
-    await axios.patch(
-      `http://localhost:8080/api/enrollments/${courseId}/complete-all`,
-      {},
-      {
-        headers: {
-          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjM0ZmM0YTlkOTNkMWJmODI2MjY2MjIiLCJpYXQiOjE3MTQ4MDM2NjMsImV4cCI6MTcxNDg5MDA2M30.O2cOLVRIED_td7tdd-JqFiMY2KPticeQA5P3NfTg8ao`,
-        },
-      }
-    );
+    await axiosInstance.patch(`/enrollments/${courseId}/complete-all`);
     return courseId;
   }
 );
@@ -138,6 +109,7 @@ const courseSlice = createSlice({
         state.status = "succeeded";
       })
       .addCase(fetchCourses.rejected, (state, action) => {
+        toast.error(action.error.message || "Failed to fetch courses");
         state.status = "failed";
         state.error = action.error.message || "Failed to fetch courses";
       })
@@ -150,6 +122,8 @@ const courseSlice = createSlice({
       })
       .addCase(fetchCourseById.rejected, (state, action) => {
         state.status = "failed";
+        toast.error(action.error.message || "Failed to fetch course details");
+
         state.error = action.error.message || "Failed to fetch course details";
       })
       .addCase(fetchEnrolledCourses.pending, (state) => {
@@ -161,18 +135,26 @@ const courseSlice = createSlice({
       })
       .addCase(fetchEnrolledCourses.rejected, (state, action) => {
         state.status = "failed";
+        toast.error(action.error.message || "Failed to fetch enrolled courses");
+
         state.error =
           action.error.message || "Failed to fetch enrolled courses";
       })
       .addCase(enrollInCourse.fulfilled, (state, action) => {
+        toast.success("Enrolled successfully");
         state.enrolledCourses = [...state.enrolledCourses, action.payload];
+      })
+      .addCase(enrollInCourse.rejected, (state, action) => {
+        toast.error(action.error.message || "Failed to enroll in course");
+        console.log(action.error);
+
+        state.error = action.error.message || "Failed to enroll in course";
       })
       .addCase(updateProgress.fulfilled, (state, action) => {
         const { courseId, week, completed } = action.payload;
         const enrollment = state.enrolledCourses.find(
           (course) => course.course._id === courseId
         );
-        console.log(enrollment);
 
         if (enrollment) {
           const item = enrollment.progress.find((p) => p.week === week);
@@ -186,7 +168,6 @@ const courseSlice = createSlice({
         const enrollment = state.enrolledCourses.find(
           (enrolled) => enrolled.course._id === courseId
         );
-        console.log(enrollment);
 
         if (enrollment) {
           enrollment.progress.forEach((course) => (course.completed = true));

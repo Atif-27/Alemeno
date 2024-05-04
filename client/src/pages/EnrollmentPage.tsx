@@ -3,6 +3,8 @@ import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
 import { markAllAsCompleted, updateProgress } from "../store/course";
 import { percentageCal } from "../utils/percentageCal";
 import { ProgressItem } from "../types/courseType";
+import InstructorCard from "../components/InstructorCard";
+import PageHeading from "../components/PageHeading";
 
 const EnrollmentPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -30,36 +32,22 @@ const EnrollmentPage = () => {
   return (
     <div>
       <header>
-        <h1 className="text-4xl font-bold">{currentCourse?.title}</h1>
+        <PageHeading
+          title={currentCourse?.title as string}
+          className="text-primary"
+        />
         <img
           src={currentCourse?.thumbnail}
           alt="thumbnail"
           className="max-w-2xl max-md:max-w-md aspect-video my-6 "
         />
         <p>{currentCourse?.description}</p>
-        <div className="card max-w-4xl   bg-neutral text-neutral-content my-10">
-          <div className="card-body px-10 py-5 ">
-            <h2 className="card-title text-2xl font-semibold">
-              Instructor Details
-            </h2>
-            <div className="flex justify-start items-start gap-4 my-4">
-              <img
-                src={currentCourse?.instructor.avatar}
-                alt="avatar"
-                className="w-14 h-14 object-cover rounded-full"
-              />
-              <div>
-                <p className="text-xl font-bold">
-                  {currentCourse?.instructor.name}
-                </p>
-                <p className="font-semibold">
-                  {currentCourse?.instructor.title}
-                </p>
-                <p>{currentCourse?.instructor.bio}</p>
-              </div>
-            </div>
-          </div>
-        </div>
+        <InstructorCard
+          avatar={currentCourse?.instructor.avatar as string}
+          name={currentCourse?.instructor.name as string}
+          title={currentCourse?.instructor.title as string}
+          bio={currentCourse?.instructor.bio as string}
+        />
       </header>
 
       {/* Progresss */}

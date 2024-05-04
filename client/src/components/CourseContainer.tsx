@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Course } from "../types/courseType";
 import { useAppSelector } from "../hooks/reduxHooks";
 import NotFound from "../assets/NotFound.jpg";
+import CourseCardSkeleton from "../skeleton/CourseCardSkeleton";
 
 const CourseContainer = ({
   courses,
@@ -15,9 +16,8 @@ const CourseContainer = ({
   const [editedCourses, setEditedCourses] = useState<Course[]>([]);
   const sort = searchParams.get("sort");
   const query = searchParams.get("q");
-  const isLoading = useAppSelector(
-    (state) => state.course.status === "loading"
-  );
+  const status = useAppSelector((state) => state.course.status);
+  const isLoading = status === "loading";
 
   useEffect(() => {
     let filteredCourses = [...courses];
@@ -54,7 +54,21 @@ const CourseContainer = ({
 
     setEditedCourses(filteredCourses);
   }, [sort, query, courses]); // Include `courses` to ensure the effect runs when courses change.
-
+  if (isLoading || editedCourses.length) {
+    return (
+      <div className="flex flex-col gap-8">
+        {editedCourses.map((course) => (
+          <div key={course._id}>
+            {isLoading ? (
+              <CourseCardSkeleton />
+            ) : (
+              editedCourses.length && <CourseCard course={course} />
+            )}
+          </div>
+        ))}
+      </div>
+    );
+  }
   if (!editedCourses.length && !isLoading) {
     return (
       <div className="flex flex-col justify-center items-center">
@@ -67,17 +81,6 @@ const CourseContainer = ({
       </div>
     );
   }
-
-  return (
-    <div className="flex flex-col gap-8">
-      {!isLoading &&
-        editedCourses.map((course: Course) => (
-          <div key={course._id}>
-            <CourseCard course={course} />
-          </div>
-        ))}
-    </div>
-  );
 };
 
 export default CourseContainer;

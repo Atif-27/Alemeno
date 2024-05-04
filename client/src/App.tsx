@@ -8,12 +8,19 @@ import LoginPage from "./pages/LoginPage";
 import Container from "./pages/layout/Container";
 import MyCourses from "./pages/MyCourses";
 import EnrollmentPage from "./pages/EnrollmentPage";
-
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import RegisterPage from "./pages/RegisterPage";
+import AuthLayout from "./pages/layout/AuthLayout";
 function App() {
   const router = createBrowserRouter([
     {
       path: "/login",
       element: <LoginPage />,
+    },
+    {
+      path: "/register",
+      element: <RegisterPage />,
     },
     {
       element: <Container />,
@@ -30,7 +37,11 @@ function App() {
     },
     {
       path: "/dashboard",
-      element: <DashboardPage />,
+      element: (
+        <AuthLayout>
+          <DashboardPage />
+        </AuthLayout>
+      ),
       children: [
         { path: "courses", element: <MyCourses /> },
         { path: "courses/:id", element: <EnrollmentPage /> },
@@ -44,6 +55,7 @@ function App() {
   return (
     <div className="min-h-screen">
       <RouterProvider router={router} />
+      <ToastContainer />
     </div>
   );
 }

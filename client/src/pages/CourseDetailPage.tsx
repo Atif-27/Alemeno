@@ -3,6 +3,12 @@ import { useParams } from "react-router";
 import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
 import { fetchCourseById } from "../store/course";
 import CourseDetailCard from "./CourseDetailCard";
+import InstructorCard from "../components/InstructorCard";
+import PageHeading from "../components/PageHeading";
+import SectionHeading from "../components/SectionHeading";
+import { MdMenuBook, MdSlowMotionVideo } from "react-icons/md";
+import { FiBookOpen } from "react-icons/fi";
+import { IoBookOutline } from "react-icons/io5";
 // import CourseDetailCard from "./CourseDetailCard";
 
 const CourseDetailPage = () => {
@@ -19,74 +25,105 @@ const CourseDetailPage = () => {
 
   return (
     <section>
-      <header className=" bg-cyan-50  max-h-[20rem]">
-        <div className=" py-20 px-40 max-md:px-10 flex justify-between gap-10     ">
+      <header className=" bg-slate-700 lg:max-h-[23rem]   md:max-h-[25rem] max-md:h-full">
+        <div className=" py-20 max-xl:px-10 px-40 max-md:px-10 flex justify-between gap-10     ">
           <div>
-            <h2 className="text-5xl font-bold">{courseDetail?.title}</h2>
-            <p>{courseDetail?.description}</p>
-            {/* <div className="rating">
-              <input
-                type="radio"
-                name="rating-2"
-                className="mask mask-star-2 bg-orange-400"
-              />
-              <input
-                type="radio"
-                name="rating-2"
-                className="mask mask-star-2 bg-orange-400"
-                checked
-              />
-              <input
-                type="radio"
-                name="rating-2"
-                className="mask mask-star-2 bg-orange-400"
-              />
-              <input
-                type="radio"
-                name="rating-2"
-                className="mask mask-star-2 bg-orange-400"
-              />
-              <input
-                type="radio"
-                name="rating-2"
-                className="mask mask-star-2 bg-orange-400"
-              />
-            </div> */}
+            <PageHeading
+              title={courseDetail?.title as string}
+              className="text-white"
+            />
+            <p className="max-w-3xl max-md:text-md text-xl mt-8">
+              {courseDetail?.description}
+            </p>
+            <div className="flex gap-4 items-center mt-8 max-md:mt-4">
+              <div className="flex gap-4 items-center max-md:flex-col  max-md:items-start text-white  opacity-90">
+                <p className="text-xl">Rating: 5 </p>
+                <p className="text-xl">
+                  Last Updated:{" "}
+                  {courseDetail?.updatedAt
+                    ? new Date(courseDetail.updatedAt).toLocaleDateString()
+                    : "N/A"}
+                </p>
+                <p className="text-xl">
+                  Enrolled: {courseDetail?.students} Students
+                </p>
+              </div>
+            </div>
           </div>
-          <div className="card w-96  shadow-xl bg-gray-400 text-black max-md:hidden">
+          <div className=" w-96 sticky top-0 left-0  shadow-xl bg-neutral text-white max-md:hidden">
             <CourseDetailCard
               avatar={courseDetail?.thumbnail as string}
               price={courseDetail?.price as number}
+              enrollmentStatus={courseDetail?.enrollmentStatus as string}
             />
           </div>
         </div>
       </header>
-      <div className="card rounded-none   shadow-xl bg-gray-400 text-black md:hidden max-w-md mx-auto my-10">
-        {/* <CourseDetailCard /> */}
+      <div className="card rounded-none   shadow-xl bg-neutral text-white md:hidden max-w-md mx-auto my-10">
+        <CourseDetailCard
+          avatar={courseDetail?.thumbnail as string}
+          price={courseDetail?.price as number}
+          enrollmentStatus={courseDetail?.enrollmentStatus as string}
+        />
       </div>
 
-      <main className="py-20 px-40 max-md:px-10 ">
+      <main className="py-20 max-xl:px-10 px-40 max-md:px-4  ">
         <div>
-          <h3>Instructor: {courseDetail?.instructor.name}</h3>
-          <p>Duration: {courseDetail?.duration} weeks</p>
-          <p>Schedule: {courseDetail?.schedule}</p>
-          <p>Location: {courseDetail?.location}</p>
-          <p>Prerequisites: {courseDetail?.prerequisites.join(", ")}</p>
+          <InstructorCard
+            avatar={courseDetail?.instructor.avatar as string}
+            name={courseDetail?.instructor.name as string}
+            title={courseDetail?.instructor.title as string}
+            bio={courseDetail?.instructor.bio as string}
+          />
+          <div>
+            <div className="card max-w-4xl   bg-neutral text-neutral-content my-10">
+              <div className="card-body px-10 py-7 ">
+                <SectionHeading title="Course Details" />
+                <div className="flex gap-4 items-center mt-3">
+                  <div className="flex flex-col gap-2 items-start">
+                    <p className="text-xl">
+                      Duration: {courseDetail?.duration}{" "}
+                    </p>
+                    <p className="text-xl">
+                      Schedule: {courseDetail?.schedule}
+                    </p>
+                    <p className="text-xl">
+                      Location: {courseDetail?.location}
+                    </p>
+                    <p className="text-xl">Prerequisites:</p>
+                    <div className="flex flex-wrap gap-4">
+                      {courseDetail?.prerequisites.map((item) => (
+                        <div className="badge px-6 py-5  max-md:p-3 text-lg max-md:text-xs ">
+                          {item}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <div>
-          <h3 className="text-4xl text-bold">Instructor</h3>
-        </div>
+
         {/* ! Syllabus */}
+
         <div className="max-w-3xl ">
-          <h3>Syllabus</h3>
-          <div className="join join-vertical w-full   text-white ">
+          <SectionHeading title="Syllabus" className="mb-4 mt-16" />
+          <p className="text-xl mb-4">
+            {courseDetail?.syllabus.length} Sections
+          </p>
+          <div className="join join-vertical w-full bg-neutral   ">
             {courseDetail?.syllabus.map((item) => (
-              <div className="collapse collapse-arrow join-item border border-gray-400">
+              <div className="collapse collapse-arrow join-item border border-gray-600 rounded-3xl">
                 <input type="radio" name="my-accordion-4" defaultChecked />
-                <div className="collapse-title text-xl font-medium">
+                <div className="collapse-title text-xl font-medium flex gap-4 items-center text-white ">
+                  <IoBookOutline />
+
                   {item.topic}
                 </div>
-                <div className="collapse-content">
+                <div className="collapse-content flex gap-4 items-center text-lg ">
+                  <MdSlowMotionVideo />
+
                   <p>{item.content}</p>
                 </div>
               </div>

@@ -1,4 +1,5 @@
 import CourseCard from "../components/CourseCard";
+import PageHeading from "../components/PageHeading";
 import { useAppSelector } from "../hooks/reduxHooks";
 import { Course, ProgressItem } from "../types/courseType";
 import { percentageCal } from "../utils/percentageCal";
@@ -12,7 +13,7 @@ const MyCourses = () => {
   const isLoading = status === "loading";
   return (
     <div>
-      <h1 className="text-5xl font-bold">My Courses</h1>
+      <PageHeading title="My Courses" className="text-primary" />
       <div className="gap-4 flex flex-col mt-10 max-w-6xl">
         {!isLoading &&
           courses.map((course: Course, index) => {
