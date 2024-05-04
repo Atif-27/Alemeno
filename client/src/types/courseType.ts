@@ -13,6 +13,7 @@ export interface Course {
   prerequisites: string[];
   syllabus: SyllabusItem[];
   isEnrolled?: boolean;
+  rating: number;
   createdAt: string;
   updatedAt: string;
 }

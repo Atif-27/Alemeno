@@ -26,6 +26,7 @@ const CourseSchema = new mongoose.Schema(
       },
     ],
     students: { type: Number, default: 0 },
+    rating: { type: Number, default: 0 },
   },
   {
     timestamps: true,

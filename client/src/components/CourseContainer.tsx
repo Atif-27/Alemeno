@@ -16,9 +16,10 @@ const CourseContainer = ({
   const [editedCourses, setEditedCourses] = useState<Course[]>([]);
   const sort = searchParams.get("sort");
   const query = searchParams.get("q");
+  const rating = searchParams.get("rating");
   const status = useAppSelector((state) => state.course.status);
   const isLoading = status === "loading";
-  console.log(isLoading);
+  console.log(editedCourses);
 
   useEffect(() => {
     let filteredCourses = [...courses];
@@ -53,8 +54,36 @@ const CourseContainer = ({
         break;
     }
 
+    switch (rating) {
+      case "5star":
+        filteredCourses = filteredCourses.filter(
+          (course) => course.rating === 5
+        );
+        break;
+      case "4star":
+        filteredCourses = filteredCourses.filter(
+          (course) => course.rating === 4
+        );
+        break;
+      case "3star":
+        filteredCourses = filteredCourses.filter(
+          (course) => course.rating === 3
+        );
+        break;
+      case "2star":
+        filteredCourses = filteredCourses.filter(
+          (course) => course.rating === 2
+        );
+        break;
+      case "1star":
+        filteredCourses = filteredCourses.filter(
+          (course) => course.rating === 1
+        );
+        break;
+    }
+
     setEditedCourses(filteredCourses);
-  }, [sort, query, courses]); // Include `courses` to ensure the effect runs when courses change.
+  }, [sort, query, courses, rating]); // Include `courses` to ensure the effect runs when courses change.
   if (isLoading || editedCourses.length) {
     return (
       <div className="flex flex-col gap-8">
@@ -68,7 +97,7 @@ const CourseContainer = ({
       </div>
     );
   }
-  if (editedCourses.length && !isLoading) {
+  if (!editedCourses.length && !isLoading) {
     return (
       <div className="flex flex-col justify-center items-center">
         No courses found

@@ -23,7 +23,7 @@ export default function CourseFilter({
 }) {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
-  const handleFilterChange = (filterId, label) => {
+  const handleFilterChange = (filterId: string, label: string) => {
     if (searchParams.get(filterId) === label) searchParams.delete(filterId);
     else searchParams.set(filterId, label);
     setSearchParams(Object.fromEntries(searchParams));
@@ -78,8 +78,8 @@ export default function CourseFilter({
                                 option.current
                                   ? "font-medium text-white"
                                   : "text-white hover:text-black",
-                                active ? "bg-gray-100" : "",
-                                "block px-4 py-2 text-sm"
+                                active ? "bg-gray-100" : "text-white",
+                                "block px-4 py-2 text-sm text-white"
                               )}
                             >
                               {option.name}
@@ -156,7 +156,7 @@ export default function CourseFilter({
                             {section.options.map((option, optionIdx) => (
                               <div
                                 key={option.value}
-                                className="flex items-center"
+                                className="flex items-center text-white"
                               >
                                 <input
                                   id={`filter-${section.id}-${optionIdx}`}
@@ -166,14 +166,14 @@ export default function CourseFilter({
                                     searchParams.get(section.id) ===
                                     option.label
                                   }
-                                  onChange={(e) =>
+                                  onChange={() =>
                                     handleFilterChange(section.id, option.label)
                                   }
                                   className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
                                 />
                                 <label
                                   htmlFor={`filter-${section.id}-${optionIdx}`}
-                                  className="ml-3 text-sm text-gray-600"
+                                  className="ml-3 text-sm text-white"
                                 >
                                   {option.label}
                                 </label>
