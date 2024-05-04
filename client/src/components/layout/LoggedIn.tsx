@@ -1,5 +1,5 @@
 import { useAppSelector } from "../../hooks/reduxHooks";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 
 const LoggedIn = ({
   children,
@@ -10,14 +10,19 @@ const LoggedIn = ({
   show?: boolean;
   callback?: () => void;
 }) => {
+  const location = useLocation();
+  const redirect = location.pathname;
   const isAuth = useAppSelector((state) => state.user.isAuthenticated);
   const navigate = useNavigate();
-  function redirect() {
-    navigate("/login");
+  function redirectOnClick() {
+    navigate("/login?redirect=" + redirect, { replace: true });
   }
   if (show) {
     return (
-      <div className="w-fit h-fit" onClick={isAuth ? callback : redirect}>
+      <div
+        className="w-fit h-fit"
+        onClick={isAuth ? callback : redirectOnClick}
+      >
         {children}
       </div>
     );

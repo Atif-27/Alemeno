@@ -1,23 +1,32 @@
 import { useState } from "react";
-import useRedirectPath from "../hooks/useRedirect";
+
 import { Link } from "react-router-dom";
 import { useAppDispatch } from "../hooks/reduxHooks";
-import { loginUser } from "../store/user";
+import { registerUser } from "../store/user";
+import useRedirectPath from "../hooks/useRedirect";
 const initialFieldState = {
-  username: "test",
+  name: "test",
   email: "test07@gmail.com",
   password: "123456",
 };
-function LoginPage() {
+function RegisterPage() {
   const [fields, setFields] = useState(initialFieldState);
   const redirect = useRedirectPath();
+
   const dispatch = useAppDispatch();
+
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     setFields({ ...fields, [e.target.id]: e.target.value });
   }
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    dispatch(loginUser({ email: fields.email, password: fields.password }));
+    dispatch(
+      registerUser({
+        email: fields.email,
+        name: fields.name,
+        password: fields.password,
+      })
+    );
   }
   return (
     <section className=" lg:grid lg:grid-cols-2  h-screen w-full ">
@@ -27,9 +36,30 @@ function LoginPage() {
       >
         <div className="mx-auto grid w-[350px] gap-6">
           <div className="grid gap-2 text-center">
-            <h1 className="text-3xl font-bold">Login</h1>
+            <h1 className="text-3xl font-bold">Register</h1>
           </div>
           <div className="grid gap-4">
+            <div className="grid gap-2">
+              <label htmlFor="name">name</label>
+              <label className="input input-bordered flex items-center gap-2">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 16 16"
+                  fill="currentColor"
+                  className="w-4 h-4 opacity-70"
+                >
+                  <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM12.735 14c.618 0 1.093-.561.872-1.139a6.002 6.002 0 0 0-11.215 0c-.22.578.254 1.139.872 1.139h9.47Z" />
+                </svg>
+                <input
+                  type="text"
+                  id="name"
+                  className="grow"
+                  placeholder="Enter Your name"
+                  onChange={handleChange}
+                  value={fields.name}
+                />
+              </label>
+            </div>
             <div className="grid gap-2">
               <label htmlFor="email">Email</label>
               <label className="input input-bordered flex items-center gap-2">
@@ -82,9 +112,9 @@ function LoginPage() {
             </button>
           </div>
           <div className="mt-4 text-center text-sm">
-            Don&apos;t have an account?{" "}
-            <Link to={"/register?redirect=" + redirect} className="underline">
-              Register
+            Already Have an account?{" "}
+            <Link to={"/login?redirect=" + redirect} className="underline">
+              Login
             </Link>
           </div>
         </div>
@@ -101,4 +131,4 @@ function LoginPage() {
     </section>
   );
 }
-export default LoginPage;
+export default RegisterPage;

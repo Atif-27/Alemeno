@@ -1,4 +1,5 @@
 export interface userDetailType {
-  username: string;
+  _id: string;
+  name: string;
   email: string;
 }
