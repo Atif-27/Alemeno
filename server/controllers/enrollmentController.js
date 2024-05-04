@@ -35,10 +35,16 @@ exports.enrollCourse = async (req, res) => {
     });
     await enrollment.save();
     // Update student count in the course document
-    await Course.findByIdAndUpdate(courseId, { $inc: { students: 1 } });
+    await Course.findByIdAndUpdate(courseId, {
+      $inc: { students: 1 },
+    });
+
+    const populatedEnrollment = await Enrollment.findById(
+      enrollment._id
+    ).populate("course");
     res.status(201).json({
-      progress: enrollment.progress,
-      course: enrollment.course,
+      progress: populatedEnrollment.progress,
+      course: populatedEnrollment.course,
     });
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -67,9 +73,12 @@ exports.getAllEnrolledCourses = async (req, res) => {
 
 // ! Update progress
 exports.updateProgress = async (req, res) => {
-  const { enrollmentId, week, completed } = req.body;
+  const { courseId, week, completed } = req.body;
   try {
-    const enrollment = await Enrollment.findById(enrollmentId);
+    const enrollment = await Enrollment.findOne({
+      course: courseId,
+      student: req.user._id,
+    });
     const progressItem = enrollment.progress.find((p) => p.week === week);
     if (progressItem) {
       progressItem.completed = completed;
@@ -83,10 +92,13 @@ exports.updateProgress = async (req, res) => {
 
 // ! Mark all progress as completed
 exports.markAllAsCompleted = async (req, res) => {
-  const { enrollmentId } = req.params; // Get enrollment ID from URL parameters
+  const { courseId } = req.params; // Get enrollment ID from URL parameters
 
   try {
-    const enrollment = await Enrollment.findById(enrollmentId);
+    const enrollment = await Enrollment.findOne({
+      course: courseId,
+      student: req.user._id,
+    });
     if (!enrollment) {
       return res.status(404).json({ message: "Enrollment not found" });
     }

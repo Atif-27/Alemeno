@@ -44,7 +44,9 @@ export const fetchEnrolledCourses = createAsyncThunk(
     const response = await axios.get(
       "http://localhost:8080/api/enrollments/my-courses",
       {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        headers: {
+          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjM0ZmM0YTlkOTNkMWJmODI2MjY2MjIiLCJpYXQiOjE3MTQ4MDM2NjMsImV4cCI6MTcxNDg5MDA2M30.O2cOLVRIED_td7tdd-JqFiMY2KPticeQA5P3NfTg8ao`,
+        },
       }
     );
     return response.data as Enrollment[];
@@ -55,9 +57,18 @@ export const fetchEnrolledCourses = createAsyncThunk(
 export const enrollInCourse = createAsyncThunk(
   "courses/enrollInCourse",
   async (courseId: string) => {
-    const response = await axios.post("http://localhost:8080/api/enrollments", {
-      courseId,
-    });
+    const response = await axios.post(
+      "http://localhost:8080/api/enrollments/enroll",
+      {
+        courseId,
+      },
+      {
+        headers: {
+          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjM0ZmM0YTlkOTNkMWJmODI2MjY2MjIiLCJpYXQiOjE3MTQ4MDM2NjMsImV4cCI6MTcxNDg5MDA2M30.O2cOLVRIED_td7tdd-JqFiMY2KPticeQA5P3NfTg8ao`,
+        },
+      }
+    );
+
     return response.data as Enrollment;
   }
 );
@@ -66,33 +77,49 @@ export const enrollInCourse = createAsyncThunk(
 export const updateProgress = createAsyncThunk(
   "courses/updateProgress",
   async ({
-    enrollmentId,
+    courseId,
     week,
     completed,
   }: {
-    enrollmentId: string;
+    courseId: string;
     week: number;
     completed: boolean;
   }) => {
-    const response = await axios.patch(
-      `/api/enrollments/${enrollmentId}/progress`,
+    await axios.patch(
+      `http://localhost:8080/api/enrollments/progress`,
       {
+        courseId,
         week,
         completed,
+      },
+      {
+        headers: {
+          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjM0ZmM0YTlkOTNkMWJmODI2MjY2MjIiLCJpYXQiOjE3MTQ4MDM2NjMsImV4cCI6MTcxNDg5MDA2M30.O2cOLVRIED_td7tdd-JqFiMY2KPticeQA5P3NfTg8ao`,
+        },
       }
     );
-    return response.data;
+    return {
+      courseId,
+      week,
+      completed,
+    };
   }
 );
 
 // ! Mark all weeks as completed
 export const markAllAsCompleted = createAsyncThunk(
   "courses/markAllAsCompleted",
-  async (enrollmentId: string) => {
-    const response = await axios.patch(
-      `/api/enrollments/${enrollmentId}/complete-all`
+  async (courseId: string) => {
+    await axios.patch(
+      `http://localhost:8080/api/enrollments/${courseId}/complete-all`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjM0ZmM0YTlkOTNkMWJmODI2MjY2MjIiLCJpYXQiOjE3MTQ4MDM2NjMsImV4cCI6MTcxNDg5MDA2M30.O2cOLVRIED_td7tdd-JqFiMY2KPticeQA5P3NfTg8ao`,
+        },
+      }
     );
-    return response.data;
+    return courseId;
   }
 );
 
@@ -138,13 +165,15 @@ const courseSlice = createSlice({
           action.error.message || "Failed to fetch enrolled courses";
       })
       .addCase(enrollInCourse.fulfilled, (state, action) => {
-        state.enrolledCourses.push(action.payload);
+        state.enrolledCourses = [...state.enrolledCourses, action.payload];
       })
       .addCase(updateProgress.fulfilled, (state, action) => {
-        const { enrollmentId, week, completed } = action.payload;
+        const { courseId, week, completed } = action.payload;
         const enrollment = state.enrolledCourses.find(
-          (enrolled) => enrolled.course._id === enrollmentId
+          (course) => course.course._id === courseId
         );
+        console.log(enrollment);
+
         if (enrollment) {
           const item = enrollment.progress.find((p) => p.week === week);
           if (item) {
@@ -153,14 +182,14 @@ const courseSlice = createSlice({
         }
       })
       .addCase(markAllAsCompleted.fulfilled, (state, action) => {
-        const { enrollmentId } = action.payload;
+        const courseId = action.payload;
         const enrollment = state.enrolledCourses.find(
-          (enrolled) => enrolled.course._id === enrollmentId
+          (enrolled) => enrolled.course._id === courseId
         );
+        console.log(enrollment);
+
         if (enrollment) {
-          enrollment.progress.forEach((item) => {
-            item.completed = true;
-          });
+          enrollment.progress.forEach((course) => (course.completed = true));
         }
       });
   },

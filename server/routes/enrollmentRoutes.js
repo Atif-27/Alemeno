@@ -13,7 +13,7 @@ const {
 
 router.post("/enroll", authMiddleware, enrollCourse);
 router.patch("/progress", authMiddleware, updateProgress);
-router.patch("/:enrollmentId/complete-all", authMiddleware, markAllAsCompleted);
+router.patch("/:courseId/complete-all", authMiddleware, markAllAsCompleted);
 router.get("/my-courses", authMiddleware, getAllEnrolledCourses);
 
 module.exports = router;

@@ -37,7 +37,7 @@ const Navbar = () => {
           />
         </form>
       </div>
-      <div className="flex-none gap-2">
+      <div className="flex items-center justify-center gap-8">
         <div className="dropdown dropdown-end">
           <div
             tabIndex={0}
@@ -56,13 +56,14 @@ const Navbar = () => {
             className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52"
           >
             <li>
-              <a className="justify-between">
-                Profile
-                <span className="badge">New</span>
-              </a>
+              <Link to={"/dashboard"} className="justify-between">
+                Dashboard
+              </Link>
             </li>
             <li>
-              <a>Settings</a>
+              <Link to={"/dashboard/courses"} className="justify-between">
+                My Courses
+              </Link>
             </li>
             <li>
               <a>Logout</a>

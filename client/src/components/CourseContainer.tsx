@@ -5,7 +5,12 @@ import { Course } from "../types/courseType";
 import { useAppSelector } from "../hooks/reduxHooks";
 import NotFound from "../assets/NotFound.jpg";
 
-const CourseContainer = ({ courses }: { courses: Course[] }) => {
+const CourseContainer = ({
+  courses,
+}: {
+  courses: Course[];
+  enrolled?: boolean;
+}) => {
   const [searchParams] = useSearchParams();
   const [editedCourses, setEditedCourses] = useState<Course[]>([]);
   const sort = searchParams.get("sort");

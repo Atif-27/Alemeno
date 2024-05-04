@@ -1,4 +1,7 @@
+import { useParams } from "react-router";
 import LoggedIn from "../components/layout.tsx/LoggedIn";
+import { useAppDispatch } from "../hooks/reduxHooks";
+import { enrollInCourse } from "../store/course";
 // import { enrollCourse } from "../store/course";
 
 const CourseDetailCard = ({
@@ -8,10 +11,10 @@ const CourseDetailCard = ({
   avatar: string;
   price: number;
 }) => {
-  // const dispatch = useAppDispatch();
-  // const { courseId } = useParams<{ courseId: string }>();
+  const dispatch = useAppDispatch();
+  const { courseId } = useParams<{ courseId: string }>();
   function handleClick() {
-    // dispatch(enrollCourse(Number(courseId)));
+    dispatch(enrollInCourse(courseId as string));
   }
   return (
     <div>
