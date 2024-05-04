@@ -15,9 +15,19 @@ exports.register = async (req, res) => {
     await user.save();
 
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
-      expiresIn: "1d",
+      expiresIn: "30d",
     });
-    res.status(201).json({ token });
+    res
+      .status(201)
+      .cookie("token", token, {
+        httpOnly: true,
+        maxAge: 30 * 24 * 60 * 60 * 1000,
+      })
+      .json({
+        name: user.name,
+        email: user.email,
+        _id: user._id,
+      });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -37,10 +47,25 @@ exports.login = async (req, res) => {
     }
 
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
-      expiresIn: "1d",
+      expiresIn: "30d",
     });
-    res.json({ token });
+    res
+      .cookie("token", token, {
+        httpOnly: true,
+        maxAge: 30 * 24 * 60 * 60 * 1000,
+      })
+      .json({
+        name: user.name,
+        email: user.email,
+        _id: user._id,
+      });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
+};
+
+exports.logout = (req, res) => {
+  res.clearCookie("token").json({
+    message: "Logged out",
+  });
 };

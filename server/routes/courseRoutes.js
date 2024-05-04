@@ -8,7 +8,6 @@ const {
   getCourseById,
   deleteCourse,
 } = require("../controllers/courseController");
-
 router.post("/", createCourse);
 router.get("/", getAllCourses);
 router.get("/:courseId", getCourseById);
