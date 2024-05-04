@@ -47,8 +47,12 @@ export default function LikeButton({ courseId }: { courseId: string }) {
       onClick={toggleLike}
       className="flex flex-col gap-2 justify-center items-center"
     >
-      {isLiked ? <FaHeart size={20} color="red" /> : <FaRegHeart size={20} />}{" "}
-      {likesCount}
+      {isLiked ? <FaHeart size={30} color="red" /> : <FaRegHeart size={30} />}{" "}
+      <span className="countdown">
+        <span
+          style={{ "--value": `${likesCount}` } as React.CSSProperties}
+        ></span>
+      </span>
     </button>
   );
 }

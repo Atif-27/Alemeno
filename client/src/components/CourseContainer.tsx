@@ -18,6 +18,7 @@ const CourseContainer = ({
   const query = searchParams.get("q");
   const status = useAppSelector((state) => state.course.status);
   const isLoading = status === "loading";
+  console.log(isLoading);
 
   useEffect(() => {
     let filteredCourses = [...courses];
@@ -57,19 +58,17 @@ const CourseContainer = ({
   if (isLoading || editedCourses.length) {
     return (
       <div className="flex flex-col gap-8">
-        {editedCourses.map((course) => (
-          <div key={course._id}>
-            {isLoading ? (
-              <CourseCardSkeleton />
-            ) : (
-              editedCourses.length && <CourseCard course={course} />
-            )}
-          </div>
-        ))}
+        {isLoading ? (
+          <CourseCardSkeleton />
+        ) : (
+          editedCourses.map((course) => (
+            <CourseCard key={course._id} course={course} />
+          ))
+        )}
       </div>
     );
   }
-  if (!editedCourses.length && !isLoading) {
+  if (editedCourses.length && !isLoading) {
     return (
       <div className="flex flex-col justify-center items-center">
         No courses found

@@ -42,7 +42,6 @@ const CourseCard = ({
           <div className="text-sm flex gap-2 items-center">
             <IoTimeSharp />
             {course.duration}
-            Hours
           </div>
           <div className="text-sm flex gap-2 items-center">
             <IoLocationSharp />
@@ -52,11 +51,14 @@ const CourseCard = ({
           <div className="text-sm flex gap-2 items-center">
             <FaCalendarCheck />
             {course.syllabus.length}{" "}
-            {course.syllabus.length > 1 ? "weeks" : "week"}
+            {course.syllabus.length > 1 ? "Sections" : "Section"}
           </div>
         </div>
         {!enrolled.value && (
           <div className="card-actions justify-end">
+            <p className=" text-emerald-400 text-xl font-bold">
+              {course.price} $
+            </p>
             <Link to={`/courses/${course._id}`}>
               <button className="btn btn-primary">View Course</button>
             </Link>

@@ -52,7 +52,7 @@ const EnrollmentPage = () => {
 
       {/* Progresss */}
       <h2 className="text-4xl font-semibold">Course Progress</h2>
-      <div className="flex gap-10  items-center my-8">
+      <div className="flex max-md:flex-col gap-10  items-center my-8">
         <div
           className="radial-progress text-primary bg-black bg-opacity-40"
           style={
@@ -62,6 +62,7 @@ const EnrollmentPage = () => {
         >
           {percentage}%
         </div>
+
         {percentage !== 100 ? (
           <button className="btn btn-accent" onClick={handleCourseComplete}>
             Mark Course as complete
