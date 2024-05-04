@@ -113,7 +113,10 @@ function RegisterPage() {
           </div>
           <div className="mt-4 text-center text-sm">
             Already Have an account?{" "}
-            <Link to={"/login?redirect=" + redirect} className="underline">
+            <Link
+              to={redirect ? `/login?redirect=${redirect}` : "/login"}
+              className="underline"
+            >
               Login
             </Link>
           </div>
@@ -121,7 +124,7 @@ function RegisterPage() {
       </form>
       <div className="hidden bg-muted lg:block bg-green-200">
         <img
-          src="/placeholder.svg"
+          src="https://foundr.com/wp-content/uploads/2023/04/How-to-create-an-online-course.jpg.webp"
           alt="Image"
           width="1920"
           height="1080"

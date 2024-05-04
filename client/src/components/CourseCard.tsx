@@ -55,13 +55,27 @@ const CourseCard = ({
           </div>
         </div>
         {!enrolled.value && (
-          <div className="card-actions justify-end">
-            <p className=" text-emerald-400 text-xl font-bold">
+          <div className="flex justify-between gap-10 flex-wrap mt-2 items-center ">
+            <p className=" text-emerald-400 text-xl font-bold w-fit">
               {course.price} $
             </p>
-            <Link to={`/courses/${course._id}`}>
-              <button className="btn btn-primary">View Course</button>
-            </Link>
+            <div className="rating">
+              {Array.from({ length: 5 }, (_, i) => 2).map((_, index) => (
+                <input
+                  type="radio"
+                  name={course._id}
+                  className="mask mask-star-2 bg-orange-400"
+                  key={index}
+                  checked={index === course.rating - 1} // Set checked if index is less than or equal to course rating minus 1
+                />
+              ))}
+              {course.rating}
+            </div>
+            <div>
+              <Link to={`/courses/${course._id}`}>
+                <button className="btn btn-primary">View Course</button>
+              </Link>
+            </div>
           </div>
         )}
         {enrolled.value && (
