@@ -1,5 +1,5 @@
 import { useSearchParams } from "react-router-dom";
-import CourseCard from "./CourseCard";
+import { CourseCard } from "./CourseCard";
 import { useEffect, useState } from "react";
 import { Course } from "../types/courseType";
 import { useAppSelector } from "../hooks/reduxHooks";

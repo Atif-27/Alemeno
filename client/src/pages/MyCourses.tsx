@@ -1,4 +1,4 @@
-import CourseCard from "../components/CourseCard";
+import { CourseCard } from "../components/CourseCard";
 import NotFound from "../components/NotFound";
 import PageHeading from "../components/PageHeading";
 import { useAppSelector } from "../hooks/reduxHooks";

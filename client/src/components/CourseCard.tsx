@@ -2,13 +2,13 @@ import { FaCalendarCheck } from "react-icons/fa";
 import { IoLocationSharp, IoTimeSharp } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import { Course } from "../types/courseType";
-
+import { memo } from "react";
 /*
  + CourseCard component is a reusable component that displays the information of a course. It takes a course object and an optional enrolled object as props.The component displays the course details  
  + The optional enrolled object is used to display the progress of the course if the user is enrolled in the course.
 */
 
-const CourseCard = ({
+const CourseComp = ({
   course,
   enrolled = {
     value: false,
@@ -27,7 +27,7 @@ const CourseCard = ({
         <img
           src={course.thumbnail}
           alt="Album"
-          className="w-full h-full object-contain ml-8 "
+          className="w-full h-full object-contain md:ml-8 "
         />
       </figure>
       <div className="card-body w-full ">
@@ -76,7 +76,7 @@ const CourseCard = ({
                   onChange={() => {}}
                 />
               ))}
-              {course.rating}
+              <p className="ml-2">{course.rating}</p>
             </div>
             <div>
               <Link to={`/courses/${course._id}`}>
@@ -115,4 +115,4 @@ const CourseCard = ({
   );
 };
 
-export default CourseCard;
+export const CourseCard = memo(CourseComp);

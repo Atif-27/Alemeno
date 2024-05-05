@@ -6,17 +6,24 @@ import {
   ScrollRestoration,
   createBrowserRouter,
 } from "react-router-dom";
-import DashboardPage from "./pages/DashboardPage";
+import { lazy } from "react";
+import { Suspense } from "react";
+
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 import NotFoundPage from "./pages/NotFoundPage";
 import LoginPage from "./pages/LoginPage";
 import Container from "./pages/layout/Container";
-import MyCourses from "./pages/MyCourses";
-import EnrollmentPage from "./pages/EnrollmentPage";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import RegisterPage from "./pages/RegisterPage";
 import AuthLayout from "./pages/layout/AuthLayout";
-import DashboardSummaryPage from "./pages/DashboardSummaryPage";
+import LoadingPage from "./pages/LoadingPage";
+
+// Lazy loading the components
+const DashboardPage = lazy(() => import("./pages/DashboardPage"));
+const MyCourses = lazy(() => import("./pages/MyCourses"));
+const EnrollmentPage = lazy(() => import("./pages/EnrollmentPage"));
+const DashboardSummaryPage = lazy(() => import("./pages/DashboardSummaryPage"));
 function App() {
   //* Defining the routes for the application
   const router = createBrowserRouter([
@@ -56,7 +63,9 @@ function App() {
           path: "/dashboard",
           element: (
             <AuthLayout>
-              <DashboardPage />
+              <Suspense fallback={<LoadingPage />}>
+                <DashboardPage />
+              </Suspense>
             </AuthLayout>
           ),
           children: [
@@ -64,8 +73,23 @@ function App() {
               path: "",
               element: <DashboardSummaryPage />,
             },
-            { path: "courses", element: <MyCourses /> },
-            { path: "courses/:id", element: <EnrollmentPage /> },
+            {
+              path: "courses",
+              element: (
+                <Suspense fallback={<LoadingPage />}>
+                  <MyCourses />
+                </Suspense>
+              ),
+            },
+
+            {
+              path: "courses/:id",
+              element: (
+                <Suspense fallback={<LoadingPage />}>
+                  <EnrollmentPage />
+                </Suspense>
+              ),
+            },
           ],
         },
         {

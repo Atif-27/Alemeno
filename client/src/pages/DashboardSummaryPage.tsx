@@ -74,7 +74,7 @@ const DashboardSummaryPage = () => {
             </div>
           </div>
           <div className="stat-value">
-            {(totalSectionCompleted / totalSections) * 100 || 0}%
+            {((totalSectionCompleted / totalSections) * 100).toFixed(2)}%
           </div>
           <div className="stat-title">Weeks done</div>
           <div className="stat-desc text-secondary">
