@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import LogoutContainer from "./layout/LogoutContainer";
 import LoggedIn from "./layout/LoggedIn";
 import LoggedOut from "./layout/LoggedOut";
+import { CiSearch } from "react-icons/ci";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -42,13 +43,16 @@ const Navbar = () => {
           </svg>
           Alemeno
         </Link>
-        <form className="" onSubmit={handleSubmit}>
+        <form className="join" onSubmit={handleSubmit}>
           <input
             type="text"
             placeholder="Search"
-            className="input input-bordered md:min-w-96  max-md:min-w-24 max-lg:min-w-16 max-md:scale-90  max-md:h-10"
+            className="input input-bordered md:min-w-96  max-md:min-w-24 max-lg:min-w-16 max-md:scale-90  max-md:h-10 join-item rounded-l-full"
             ref={inputRef}
           />
+          <button className="btn join-item  bg-yellow-50 text-black hover:bg-primary hover:text-white rounded-r-full">
+            <CiSearch size={20} />
+          </button>
         </form>
       </div>
       <div className="flex items-center justify-center gap-8">

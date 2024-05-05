@@ -12,6 +12,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import RegisterPage from "./pages/RegisterPage";
 import AuthLayout from "./pages/layout/AuthLayout";
+import DashboardSummaryPage from "./pages/DashboardSummaryPage";
 function App() {
   const router = createBrowserRouter([
     {
@@ -43,6 +44,10 @@ function App() {
         </AuthLayout>
       ),
       children: [
+        {
+          path: "",
+          element: <DashboardSummaryPage />,
+        },
         { path: "courses", element: <MyCourses /> },
         { path: "courses/:id", element: <EnrollmentPage /> },
       ],

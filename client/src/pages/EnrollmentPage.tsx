@@ -77,7 +77,10 @@ const EnrollmentPage = () => {
       {/* Syllabus and progress */}
       <section className="max-w-4xl max-lg:max-w-2xl max-md:max-w-md w-auto">
         {currentCourse?.syllabus.map((item, index) => (
-          <div className="collapse collapse-arrow join-item border border-gray-400">
+          <div
+            className="collapse collapse-arrow join-item border border-gray-400"
+            key={item.week}
+          >
             <input type="radio" name="my-accordion-4" defaultChecked />
             <div className="collapse-title text-xl font-medium flex gap-4 items-center">
               {item.topic}
