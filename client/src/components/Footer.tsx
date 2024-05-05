@@ -1,3 +1,7 @@
+/*
+  This is a footer component that displays the footer of the application.
+*/
+
 const Footer = () => {
   return (
     <footer className="footer mx-auto bg-base-200 text-lg h-fit py-20 px-10 ">

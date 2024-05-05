@@ -5,11 +5,14 @@ import { percentageCal } from "../utils/percentageCal";
 import { ProgressItem } from "../types/courseType";
 import InstructorCard from "../components/InstructorCard";
 import PageHeading from "../components/PageHeading";
+import LoadingPage from "./LoadingPage";
 
 const EnrollmentPage = () => {
   const { id } = useParams<{ id: string }>();
   const dispatch = useAppDispatch();
-  const enrollCourse = useAppSelector((state) => state.course.enrolledCourses);
+  const eCourse = useAppSelector((state) => state.course);
+  const enrollCourse = eCourse.enrolledCourses;
+  const isLoading = eCourse.status === "loading";
   const course = enrollCourse.find(
     (course) => String(course.course._id) === id
   );
@@ -29,6 +32,7 @@ const EnrollmentPage = () => {
   function handleCourseComplete() {
     dispatch(markAllAsCompleted(currentCourse?._id as string));
   }
+  if (isLoading) return <LoadingPage />;
   return (
     <div>
       <header>

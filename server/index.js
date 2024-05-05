@@ -69,10 +69,15 @@ io.on("connection", (socket) => {
 
   socket.on("toggleLike", async ({ courseId, userId }) => {
     try {
-      const likes = await Likes.findOne({ course: courseId });
-      let updatedLikes;
+      let likes = await Likes.findOne({ course: courseId });
       if (!likes) {
-        updatedLikes = new Likes({ course: courseId, usersLiked: [userId] });
+        likes = new Likes({ course: courseId, usersLiked: [userId] });
+        await likes.save();
+        io.emit("likesUpdated", {
+          courseId: courseId,
+          usersLiked: likes.usersLiked,
+          count: likes.usersLiked.length,
+        });
       } else {
         const index = likes.usersLiked.indexOf(userId);
         if (index === -1) {
@@ -80,13 +85,13 @@ io.on("connection", (socket) => {
         } else {
           likes.usersLiked.splice(index, 1);
         }
-        updatedLikes = await likes.save();
+        await likes.save();
+        io.emit("likesUpdated", {
+          courseId: courseId,
+          usersLiked: likes.usersLiked,
+          count: likes.usersLiked.length,
+        });
       }
-      io.emit("likesUpdated", {
-        courseId: courseId,
-        usersLiked: updatedLikes.usersLiked,
-        count: updatedLikes.usersLiked.length,
-      });
     } catch (error) {
       console.error("Error toggling like:", error);
       socket.emit("error", "Error toggling like");

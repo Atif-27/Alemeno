@@ -1,5 +1,10 @@
 import SectionHeading from "./SectionHeading";
 
+/*
+  InstructorCard component is used to display the details of the instructor.
+  It returns a card with the instructor's avatar, name, title, and bio.
+*/
+
 const InstructorCard = ({
   avatar,
   name,

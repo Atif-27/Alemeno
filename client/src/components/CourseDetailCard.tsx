@@ -1,10 +1,14 @@
 import { useParams } from "react-router";
-import LoggedIn from "../components/layout/LoggedIn";
+import LoggedIn from "./layout/LoggedIn";
 import { useAppDispatch } from "../hooks/reduxHooks";
 import { enrollInCourse } from "../store/course";
-import LikeButton from "../components/LikeButton";
+import LikeButton from "./LikeButton";
 // import { enrollCourse } from "../store/course";
-
+/*
++ CourseDetailCard component is a reusable component that displays the course details.
++ The component takes an avatar, price, and enrollmentStatus prop.
++ The component also dispatches the enrollInCourse action when the enroll button is clicked.
+*/
 const CourseDetailCard = ({
   avatar,
   price,

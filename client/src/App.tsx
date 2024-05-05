@@ -1,4 +1,3 @@
-import "./App.css";
 import CourseDetailPage from "./pages/CourseDetailPage";
 import CourseListPage from "./pages/CourseListPage";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
@@ -14,6 +13,7 @@ import RegisterPage from "./pages/RegisterPage";
 import AuthLayout from "./pages/layout/AuthLayout";
 import DashboardSummaryPage from "./pages/DashboardSummaryPage";
 function App() {
+  //* Defining the routes for the application
   const router = createBrowserRouter([
     {
       path: "/login",
@@ -24,7 +24,7 @@ function App() {
       element: <RegisterPage />,
     },
     {
-      element: <Container />,
+      element: <Container />, // This is the layout for the course pages which includes the Navbar and footer
       children: [
         {
           path: "/",
@@ -36,6 +36,7 @@ function App() {
         },
       ],
     },
+    // This is dashboard routes which can be acceseed only after login
     {
       path: "/dashboard",
       element: (
@@ -61,6 +62,7 @@ function App() {
     <div className="min-h-screen">
       <RouterProvider router={router} />
       <ToastContainer />
+      {/* This is the toast container for showing the toast messages */}
     </div>
   );
 }

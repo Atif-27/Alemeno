@@ -2,26 +2,31 @@ import { useEffect } from "react";
 import { useParams } from "react-router";
 import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
 import { fetchCourseById } from "../store/course";
-import CourseDetailCard from "./CourseDetailCard";
+import CourseDetailCard from "../components/CourseDetailCard";
 import InstructorCard from "../components/InstructorCard";
 import PageHeading from "../components/PageHeading";
 import SectionHeading from "../components/SectionHeading";
 import { MdSlowMotionVideo } from "react-icons/md";
 import { IoBookOutline } from "react-icons/io5";
-// import CourseDetailCard from "./CourseDetailCard";
+import LoadingPage from "./LoadingPage";
+
+/*
++ CourseDetailPage is a component that displays the course details.
++ The component uses the useParams hook to get the courseId from the URL.
++ The component dispatches the fetchCourseById action to get the course details.
+*/
 
 const CourseDetailPage = () => {
   const { courseId } = useParams();
   console.log(courseId);
-
   const dispatch = useAppDispatch();
-  const courseDetail = useAppSelector((state) => state.course.selectedCourse);
-  console.log(courseDetail);
-
+  const course = useAppSelector((state) => state.course);
+  const courseDetail = course.selectedCourse;
+  const isLoading = course.status === "loading";
   useEffect(() => {
-    dispatch(fetchCourseById(courseId as string));
+    dispatch(fetchCourseById(courseId as string)); // Fetch course details by courseId
   }, [courseId, dispatch]);
-
+  if (isLoading) return <LoadingPage />;
   return (
     <section>
       <header className=" bg-slate-700 lg:max-h-[23rem]   md:max-h-[25rem] max-md:h-full">

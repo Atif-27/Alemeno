@@ -1,3 +1,6 @@
+/*
+ This file contains the constants for the course list page
+*/
 export const sortOptions = [
   { name: "Best Rating", href: "rating", current: false },
   { name: "Newest", href: "newest", current: false },

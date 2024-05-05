@@ -1,3 +1,8 @@
+/*
++This component is used to render the heading of the section.
++It takes a title prop which is the title of the section and a className prop which is used to style the heading.
+*/
+
 const SectionHeading = ({
   title,
   className,

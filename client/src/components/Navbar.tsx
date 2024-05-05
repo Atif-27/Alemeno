@@ -6,6 +6,12 @@ import LoggedIn from "./layout/LoggedIn";
 import LoggedOut from "./layout/LoggedOut";
 import { CiSearch } from "react-icons/ci";
 
+/*
++ Navbar component is a reusable component that displays the navigation bar of the application. It contains the search bar and user authentication buttons.
++ The component also contains the user avatar and dropdown menu for logged-in users.
++ If user isnt logged in, the component displays the login and register buttons.
+*/
+
 const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();

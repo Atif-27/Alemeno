@@ -3,6 +3,7 @@ import PageHeading from "../components/PageHeading";
 import { useAppSelector } from "../hooks/reduxHooks";
 import { Course, ProgressItem } from "../types/courseType";
 import { percentageCal } from "../utils/percentageCal";
+import LoadingPage from "./LoadingPage";
 
 const MyCourses = () => {
   const { enrolledCourses: course, status } = useAppSelector(
@@ -11,6 +12,7 @@ const MyCourses = () => {
   const progress = course.map((course) => course.progress);
   const courses = course.map((course) => course.course);
   const isLoading = status === "loading";
+  if (isLoading) return <LoadingPage />;
   return (
     <div>
       <PageHeading title="My Courses" className="text-primary" />
@@ -25,7 +27,7 @@ const MyCourses = () => {
                   course={course}
                   enrolled={{
                     value: true,
-                    progress: percentage,
+                    progress: percentage as number,
                   }}
                 />
               </div>

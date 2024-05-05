@@ -3,6 +3,11 @@ import { IoLocationSharp, IoTimeSharp } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import { Course } from "../types/courseType";
 
+/*
+ + CourseCard component is a reusable component that displays the information of a course. It takes a course object and an optional enrolled object as props.The component displays the course details  
+ + The optional enrolled object is used to display the progress of the course if the user is enrolled in the course.
+*/
+
 const CourseCard = ({
   course,
   enrolled = {
@@ -54,6 +59,7 @@ const CourseCard = ({
             {course.syllabus.length > 1 ? "Sections" : "Section"}
           </div>
         </div>
+        {/* Display price, rating and view course button */}
         {!enrolled.value && (
           <div className="flex justify-between gap-10 flex-wrap mt-2 items-center ">
             <p className=" text-emerald-400 text-xl font-bold w-fit">
@@ -78,6 +84,8 @@ const CourseCard = ({
             </div>
           </div>
         )}
+
+        {/* Progress bar & Resume course link */}
         {enrolled.value && (
           <section className="my-3">
             <div className="flex  gap-4  items-center">

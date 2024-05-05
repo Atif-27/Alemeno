@@ -6,24 +6,21 @@ import { useAppSelector } from "../hooks/reduxHooks";
 import NotFound from "../assets/NotFound.jpg";
 import CourseCardSkeleton from "../skeleton/CourseCardSkeleton";
 
-const CourseContainer = ({
-  courses,
-}: {
-  courses: Course[];
-  enrolled?: boolean;
-}) => {
+/*
++ CourseContainer is a component that displays a list of courses based on the search parameters.
+*/
+
+const CourseContainer = ({ courses }: { courses: Course[] }) => {
   const [searchParams] = useSearchParams();
   const [editedCourses, setEditedCourses] = useState<Course[]>([]);
+  const status = useAppSelector((state) => state.course.status);
   const sort = searchParams.get("sort");
   const query = searchParams.get("q");
   const rating = searchParams.get("rating");
-  const status = useAppSelector((state) => state.course.status);
   const isLoading = status === "loading";
-  console.log(editedCourses);
 
   useEffect(() => {
     let filteredCourses = [...courses];
-
     // Filter courses based on search query -> Name and Instructor name
     if (query) {
       filteredCourses = filteredCourses.filter(
@@ -83,7 +80,23 @@ const CourseContainer = ({
     }
 
     setEditedCourses(filteredCourses);
-  }, [sort, query, courses, rating]); // Include `courses` to ensure the effect runs when courses change.
+  }, [sort, query, courses, rating]);
+
+  // Display no courses found message if no courses are found
+  if (!editedCourses.length && !isLoading) {
+    return (
+      <div className="flex flex-col justify-center items-center">
+        No courses found
+        <img
+          src={NotFound}
+          alt="No courses found"
+          className="w-96 h-96 mx-auto"
+        />
+      </div>
+    );
+  }
+
+  // Display loading skeleton if courses are still loading or  edited courses List
   if (isLoading || editedCourses.length) {
     return (
       <div className="flex flex-col gap-8">
@@ -94,18 +107,6 @@ const CourseContainer = ({
             <CourseCard key={course._id} course={course} />
           ))
         )}
-      </div>
-    );
-  }
-  if (!editedCourses.length && !isLoading) {
-    return (
-      <div className="flex flex-col justify-center items-center">
-        No courses found
-        <img
-          src={NotFound}
-          alt="No courses found"
-          className="w-96 h-96 mx-auto"
-        />
       </div>
     );
   }

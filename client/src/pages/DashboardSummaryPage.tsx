@@ -1,8 +1,11 @@
 import PageHeading from "../components/PageHeading";
 import { useAppSelector } from "../hooks/reduxHooks";
+import LoadingPage from "./LoadingPage";
 
 const DashboardSummaryPage = () => {
-  const enrolled = useAppSelector((state) => state.course.enrolledCourses);
+  const course = useAppSelector((state) => state.course);
+  const enrolled = course.enrolledCourses;
+  const isLoading = course.status === "loading";
   const totalCourses = enrolled.length;
   const totalWorth = enrolled.reduce((acc, course) => {
     return acc + course.course.price;
@@ -14,7 +17,7 @@ const DashboardSummaryPage = () => {
   const totalSections = enrolled.reduce((acc, course) => {
     return acc + course.course.syllabus.length;
   }, 0);
-
+  if (isLoading) return <LoadingPage />;
   return (
     <div>
       <PageHeading title="Dashboard" className="text-primary" />

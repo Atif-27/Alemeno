@@ -1,11 +1,14 @@
 import { MdDataUsage } from "react-icons/md";
-
 import { FaTent } from "react-icons/fa6";
 import { IoArrowBackOutline } from "react-icons/io5";
 import { Link, useNavigate } from "react-router-dom";
 import SidebarButton from "./SidebarButton";
 import { useAppSelector } from "../hooks/reduxHooks";
 import LogoutContainer from "./layout/LogoutContainer";
+
+/*
++ Sidebar component is a reusable component that displays the sidebar navigation for the dashboard page.
+*/
 
 const Sidebar = ({ type }: { type?: string }) => {
   const navigate = useNavigate();

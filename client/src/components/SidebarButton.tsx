@@ -1,5 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
-
+/*
++ SidebarButton component is a reusable component that displays the sidebar navigation buttons.
+*/
 const SidebarButton = ({
   children,
   logo,
