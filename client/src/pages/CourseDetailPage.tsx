@@ -44,13 +44,14 @@ const CourseDetailPage = () => {
             <div className="flex gap-4 items-center mt-8 max-md:mt-4">
               <div className="flex gap-4 items-center max-md:flex-col  max-md:items-start text-white  opacity-90">
                 <div className="rating">
-                  {Array.from({ length: 5 }, () => 2).map((_, index) => (
+                  {Array.from({ length: 5 }, (_, index) => (
                     <input
                       type="radio"
                       name={courseDetail?._id}
                       className="mask mask-star-2 bg-orange-400"
-                      key={index}
-                      checked={index === Number(courseDetail?.rating) - 1} // Set checked if index is less than or equal to course rating minus 1
+                      key={`${courseDetail?._id}-${index}`} // Use a unique key for each input
+                      checked={index === Number(courseDetail?.rating) - 1}
+                      onChange={() => {}}
                     />
                   ))}
                 </div>
@@ -109,7 +110,10 @@ const CourseDetailPage = () => {
                     <p className="text-xl">Prerequisites:</p>
                     <div className="flex flex-wrap gap-4">
                       {courseDetail?.prerequisites.map((item) => (
-                        <div className="badge px-6 py-5  max-md:p-3 text-lg max-md:text-xs ">
+                        <div
+                          key={item}
+                          className="badge px-6 py-5  max-md:p-3 text-lg max-md:text-xs "
+                        >
                           {item}
                         </div>
                       ))}
@@ -130,7 +134,10 @@ const CourseDetailPage = () => {
           </p>
           <div className="join join-vertical w-full bg-neutral   ">
             {courseDetail?.syllabus.map((item) => (
-              <div className="collapse collapse-arrow join-item border border-gray-600 rounded-3xl">
+              <div
+                key={item.topic}
+                className="collapse collapse-arrow join-item border border-gray-600 rounded-3xl"
+              >
                 <input type="radio" name="my-accordion-4" defaultChecked />
                 <div className="collapse-title text-xl font-medium flex gap-4 items-center text-white ">
                   <IoBookOutline />

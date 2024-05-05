@@ -66,13 +66,14 @@ const CourseCard = ({
               {course.price} $
             </p>
             <div className="rating">
-              {Array.from({ length: 5 }, () => 2).map((_, index) => (
+              {Array.from({ length: 5 }, (_, index) => (
                 <input
                   type="radio"
-                  name={course._id}
+                  name={course?._id}
                   className="mask mask-star-2 bg-orange-400"
-                  key={index}
-                  checked={index === course.rating - 1} // Set checked if index is less than or equal to course rating minus 1
+                  key={`${course?._id}-${index}`} // Use a unique key for each input
+                  checked={index === Number(course?.rating) - 1}
+                  onChange={() => {}}
                 />
               ))}
               {course.rating}
