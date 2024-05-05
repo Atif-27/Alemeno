@@ -191,9 +191,8 @@ const courseSlice = createSlice({
           action.payload,
         ] as Enrollment[];
       })
-      .addCase(enrollInCourse.rejected, (state, action) => {
+      .addCase(enrollInCourse.rejected, (_, action) => {
         toast.error(action.payload as string);
-        state.error = action.payload as string;
       })
       .addCase(updateProgress.fulfilled, (state, action) => {
         const { courseId, week, completed } = action.payload as {

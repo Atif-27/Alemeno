@@ -9,7 +9,6 @@ const CoursListPage = () => {
   const dispatch = useAppDispatch();
   const courses = useAppSelector((state) => state.course);
   const isLoading = courses.status === "loading";
-  console.log(courses);
   useEffect(() => {
     dispatch(fetchCourses());
   }, [dispatch]);

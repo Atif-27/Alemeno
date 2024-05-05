@@ -9,7 +9,7 @@ import { toast } from "react-toastify";
 + The component also updates the like button based on the user's like status.
 */
 
-const socket = io("http://localhost:8080");
+const socket = io(import.meta.env.VITE_SOCKET_URL);
 export default function LikeButton({ courseId }: { courseId: string }) {
   const [likesCount, setLikesCount] = useState(0);
   const [isLiked, setIsLiked] = useState(false);
@@ -40,8 +40,6 @@ export default function LikeButton({ courseId }: { courseId: string }) {
   }, [courseId, userId]);
 
   const toggleLike = () => {
-    console.log("toggle like");
-
     if (!userId) {
       toast.error("Please login to like the course");
       return;
