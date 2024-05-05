@@ -27,7 +27,7 @@ const CourseCard = ({
         <img
           src={course.thumbnail}
           alt="Album"
-          className="w-full h-full  object-center "
+          className="w-full h-full object-contain ml-8 "
         />
       </figure>
       <div className="card-body w-full ">

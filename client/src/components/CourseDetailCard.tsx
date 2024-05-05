@@ -33,7 +33,7 @@ const CourseDetailCard = ({
           {price} $
           <div className="badge badge-secondary">{enrollmentStatus}</div>
         </h2>
-        <p>If a dog chews shoes whose shoes does he choose?</p>
+        <p>You can enroll in the course and gain immediate access.</p>
         <div className="card-actions flex justify-between ">
           <LoggedIn show={true} callback={handleClick}>
             <button className="btn btn-primary w-full">Enroll Now</button>

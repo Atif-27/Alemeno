@@ -30,11 +30,11 @@ const Navbar = () => {
     }
   }
   return (
-    <div className="navbar bg-base-100 md:px-20 py-3 max-md:py-3 sticky top-0 z-10  space-y-3 ">
-      <div className="flex-1 flex gap-4 md:gap-20">
+    <div className="navbar  bg-base-100 md:px-20 py-3 max-md:py-3 sticky top-0 z-10  space-y-3 ">
+      <div className="flex-1 flex gap-4 md:gap-10">
         <Link
           to={"/"}
-          className="btn btn-ghost text-xl max-md:text-sm max-md:hidden"
+          className="btn btn-ghost text-xl max-md:text-sm max-lg:hidden"
         >
           <svg
             width="20"
@@ -53,21 +53,24 @@ const Navbar = () => {
           <input
             type="text"
             placeholder="Search"
-            className="input input-bordered md:min-w-96  max-md:min-w-24 max-lg:min-w-16 max-md:scale-90  max-md:h-10 join-item rounded-l-full"
+            className="input input-bordered xl:w-96 max-lg:w-80 max-md:w-52 max-sm:w-40    md:join-item md:rounded-l-full"
             ref={inputRef}
           />
-          <button className="btn join-item  bg-yellow-50 text-black hover:bg-primary hover:text-white rounded-r-full">
+          <button className="btn join-item  bg-yellow-50 text-black hover:bg-primary hover:text-white rounded-r-full max-md:h-10 max-md:hidden">
             <CiSearch size={20} />
           </button>
         </form>
       </div>
-      <div className="flex items-center justify-center gap-8">
+      <div className="flex items-center justify-center gap-8 max-md:gap-2">
         <LoggedOut>
           <div className="flex items-center justify-center gap-4">
-            <Link className="btn btn-active btn-primary" to={"/login"}>
+            <Link
+              className="btn btn-active btn-primary max-md:px-2"
+              to={"/login"}
+            >
               Login
             </Link>
-            <Link className="btn btn-outline" to={"/register"}>
+            <Link className="btn btn-outline max-md:px-2" to={"/register"}>
               Register
             </Link>
           </div>
