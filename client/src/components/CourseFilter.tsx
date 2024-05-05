@@ -10,8 +10,15 @@ import {
 
 import { filters, sortOptions, subCategories } from "../constants/courseList";
 import { MobileFilter } from "./MobileFilter";
-import { useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 
+/*
++ CourseFilter is a component that displays the filter options for the courses page.
++ It contains the filter options for the courses page.
++ The component is used in the CourseListPage component.
++ The component uses the MobileFilter component to display the filter options on mobile devices.
++ The component uses the Disclosure component from the Headless UI library to display the filter options.
+*/
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
@@ -118,7 +125,7 @@ export default function CourseFilter({
                 >
                   {subCategories.map((category) => (
                     <li key={category.name}>
-                      <a href={category.href}>{category.name}</a>
+                      <Link to={category.href}>{category.name}</Link>
                     </li>
                   ))}
                 </ul>
