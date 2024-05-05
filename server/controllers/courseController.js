@@ -2,6 +2,7 @@
 const Course = require("../models/Course");
 const Enrollment = require("../models/Enrollment");
 
+// Create a new course and save it to the database
 exports.createCourse = async (req, res) => {
   const {
     name,
@@ -33,6 +34,7 @@ exports.createCourse = async (req, res) => {
   }
 };
 
+// Retrieve all courses from the database
 exports.getAllCourses = async (req, res) => {
   try {
     const courses = await Course.find();
@@ -41,6 +43,7 @@ exports.getAllCourses = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+// Retrieve a course by its ID from the database
 exports.getCourseById = async (req, res) => {
   const { courseId } = req.params;
   try {
@@ -54,6 +57,7 @@ exports.getCourseById = async (req, res) => {
   }
 };
 
+// Update a course by its ID in the database
 exports.updateCourse = async (req, res) => {
   const { courseId } = req.params;
   const updates = req.body;
@@ -67,6 +71,7 @@ exports.updateCourse = async (req, res) => {
   }
 };
 
+// Delete a course by its ID from the database
 exports.deleteCourse = async (req, res) => {
   const { courseId } = req.params;
   try {

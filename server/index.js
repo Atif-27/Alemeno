@@ -1,4 +1,3 @@
-// index.js
 const express = require("express");
 const http = require("http");
 const socketIo = require("socket.io");
@@ -35,7 +34,7 @@ mongoose
   .then(() => console.log("MongoDB connected"))
   .catch((err) => console.log(err));
 
-// index.js
+// Routes
 const userRoutes = require("./routes/userRoutes");
 const courseRoutes = require("./routes/courseRoutes");
 const enrollmentRoutes = require("./routes/enrollmentRoutes");
@@ -47,6 +46,7 @@ app.use("/api/enrollments", enrollmentRoutes);
 // Start server
 server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
+// Socket.io
 io.on("connection", (socket) => {
   console.log("New client connected");
 

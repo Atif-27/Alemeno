@@ -1,5 +1,6 @@
 const Likes = require("../models/Likes");
 
+// Toggle like for a course
 exports.toggleLike = async (req, res) => {
   const { courseId } = req.body;
   const userId = req.user._id;

@@ -3,6 +3,7 @@ const User = require("../models/User");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
+// Register a new user and generate a JWT
 exports.register = async (req, res) => {
   const { name, email, password } = req.body;
   try {
@@ -33,6 +34,7 @@ exports.register = async (req, res) => {
   }
 };
 
+//  Log in an existing user and generate a JWT
 exports.login = async (req, res) => {
   const { email, password } = req.body;
   try {
@@ -64,6 +66,7 @@ exports.login = async (req, res) => {
   }
 };
 
+//  Log out a user by clearing the JWT cookie
 exports.logout = (req, res) => {
   res.clearCookie("token").json({
     message: "Logged out",
