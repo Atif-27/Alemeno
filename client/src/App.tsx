@@ -1,6 +1,11 @@
 import CourseDetailPage from "./pages/CourseDetailPage";
 import CourseListPage from "./pages/CourseListPage";
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import {
+  Outlet,
+  RouterProvider,
+  ScrollRestoration,
+  createBrowserRouter,
+} from "react-router-dom";
 import DashboardPage from "./pages/DashboardPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import LoginPage from "./pages/LoginPage";
@@ -16,51 +21,64 @@ function App() {
   //* Defining the routes for the application
   const router = createBrowserRouter([
     {
-      path: "/login",
-      element: <LoginPage />,
-    },
-    {
-      path: "/register",
-      element: <RegisterPage />,
-    },
-    {
-      element: <Container />, // This is the layout for the course pages which includes the Navbar and footer
-      children: [
-        {
-          path: "/",
-          element: <CourseListPage />,
-        },
-        {
-          path: "/courses/:courseId",
-          element: <CourseDetailPage />,
-        },
-      ],
-    },
-    // This is dashboard routes which can be acceseed only after login
-    {
-      path: "/dashboard",
       element: (
-        <AuthLayout>
-          <DashboardPage />
-        </AuthLayout>
+        <>
+          {
+            // This is the scroll restoration component which restores the scroll position on page change
+          }
+          <ScrollRestoration /> <Outlet />
+        </>
       ),
       children: [
         {
-          path: "",
-          element: <DashboardSummaryPage />,
+          path: "/login",
+          element: <LoginPage />,
         },
-        { path: "courses", element: <MyCourses /> },
-        { path: "courses/:id", element: <EnrollmentPage /> },
+        {
+          path: "/register",
+          element: <RegisterPage />,
+        },
+        {
+          element: <Container />, // This is the layout for the course pages which includes the Navbar and footer
+          children: [
+            {
+              path: "/",
+              element: <CourseListPage />,
+            },
+            {
+              path: "/courses/:courseId",
+              element: <CourseDetailPage />,
+            },
+          ],
+        },
+        // This is dashboard routes which can be acceseed only after login
+        {
+          path: "/dashboard",
+          element: (
+            <AuthLayout>
+              <DashboardPage />
+            </AuthLayout>
+          ),
+          children: [
+            {
+              path: "",
+              element: <DashboardSummaryPage />,
+            },
+            { path: "courses", element: <MyCourses /> },
+            { path: "courses/:id", element: <EnrollmentPage /> },
+          ],
+        },
+        {
+          path: "*",
+          element: <NotFoundPage />,
+        },
       ],
-    },
-    {
-      path: "*",
-      element: <NotFoundPage />,
     },
   ]);
   return (
     <div className="min-h-screen">
       <RouterProvider router={router} />
+
       <ToastContainer />
       {/* This is the toast container for showing the toast messages */}
     </div>

@@ -1,4 +1,4 @@
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
 import { markAllAsCompleted, updateProgress } from "../store/course";
 import { percentageCal } from "../utils/percentageCal";
@@ -9,8 +9,10 @@ import LoadingPage from "./LoadingPage";
 
 const EnrollmentPage = () => {
   const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const eCourse = useAppSelector((state) => state.course);
+  const error = eCourse.error;
   const enrollCourse = eCourse.enrolledCourses;
   const isLoading = eCourse.status === "loading";
   const course = enrollCourse.find(
@@ -33,6 +35,8 @@ const EnrollmentPage = () => {
     dispatch(markAllAsCompleted(currentCourse?._id as string));
   }
   if (isLoading) return <LoadingPage />;
+  if (error || !currentCourse?._id) navigate("/something-went-wrong");
+
   return (
     <div>
       <header>

@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
 import { fetchCourseById } from "../store/course";
 import CourseDetailCard from "../components/CourseDetailCard";
@@ -18,15 +18,17 @@ import LoadingPage from "./LoadingPage";
 
 const CourseDetailPage = () => {
   const { courseId } = useParams();
-  console.log(courseId);
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const course = useAppSelector((state) => state.course);
   const courseDetail = course.selectedCourse;
   const isLoading = course.status === "loading";
+  const error = course.error;
   useEffect(() => {
     dispatch(fetchCourseById(courseId as string)); // Fetch course details by courseId
   }, [courseId, dispatch]);
   if (isLoading) return <LoadingPage />;
+  if (error) navigate("/something-went-wrong");
   return (
     <section>
       <header className=" bg-slate-700 lg:max-h-[23rem]   md:max-h-[25rem] max-md:h-full">

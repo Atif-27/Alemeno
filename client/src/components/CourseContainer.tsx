@@ -3,8 +3,8 @@ import CourseCard from "./CourseCard";
 import { useEffect, useState } from "react";
 import { Course } from "../types/courseType";
 import { useAppSelector } from "../hooks/reduxHooks";
-import NotFound from "../assets/NotFound.jpg";
 import CourseCardSkeleton from "../skeleton/CourseCardSkeleton";
+import NotFound from "./NotFound";
 
 /*
 + CourseContainer is a component that displays a list of courses based on the search parameters.
@@ -82,20 +82,6 @@ const CourseContainer = ({ courses }: { courses: Course[] }) => {
     setEditedCourses(filteredCourses);
   }, [sort, query, courses, rating]);
 
-  // Display no courses found message if no courses are found
-  if (!editedCourses.length && !isLoading) {
-    return (
-      <div className="flex flex-col justify-center items-center">
-        No courses found
-        <img
-          src={NotFound}
-          alt="No courses found"
-          className="w-96 h-96 mx-auto"
-        />
-      </div>
-    );
-  }
-
   // Display loading skeleton if courses are still loading or  edited courses List
   if (isLoading || editedCourses.length) {
     return (
@@ -109,6 +95,10 @@ const CourseContainer = ({ courses }: { courses: Course[] }) => {
         )}
       </div>
     );
+  }
+  // Display no courses found message if no courses are found
+  if (!editedCourses.length && !isLoading) {
+    return <NotFound />;
   }
 };
 

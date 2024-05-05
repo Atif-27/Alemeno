@@ -7,16 +7,19 @@ const DashboardSummaryPage = () => {
   const enrolled = course.enrolledCourses;
   const isLoading = course.status === "loading";
   const totalCourses = enrolled.length;
-  const totalWorth = enrolled.reduce((acc, course) => {
-    return acc + course.course.price;
-  }, 0);
+  const totalWorth =
+    enrolled.reduce((acc, course) => {
+      return acc + course.course.price;
+    }, 0) || 0;
 
-  const totalSectionCompleted = enrolled.reduce((acc, course) => {
-    return acc + course.progress.filter((item) => item.completed).length;
-  }, 0);
-  const totalSections = enrolled.reduce((acc, course) => {
-    return acc + course.course.syllabus.length;
-  }, 0);
+  const totalSectionCompleted =
+    enrolled.reduce((acc, course) => {
+      return acc + course.progress.filter((item) => item.completed).length;
+    }, 0) || 0;
+  const totalSections =
+    enrolled.reduce((acc, course) => {
+      return acc + course.course.syllabus.length;
+    }, 0) || 0;
   if (isLoading) return <LoadingPage />;
   return (
     <div>
@@ -71,7 +74,7 @@ const DashboardSummaryPage = () => {
             </div>
           </div>
           <div className="stat-value">
-            {(totalSectionCompleted / totalSections) * 100}%
+            {(totalSectionCompleted / totalSections) * 100 || 0}%
           </div>
           <div className="stat-title">Weeks done</div>
           <div className="stat-desc text-secondary">
