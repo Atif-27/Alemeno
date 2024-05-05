@@ -1,11 +1,11 @@
 export const loginInitialField = {
-  username: "test",
-  email: "test07@gmail.com",
-  password: "123456",
+  username: "",
+  email: "",
+  password: "",
 };
 
 export const registerInitialField = {
-  name: "test",
-  email: "test07@gmail.com",
-  password: "123456",
+  name: "",
+  email: "",
+  password: "",
 };
