@@ -72,6 +72,9 @@ Ensure you have the following environment variables set in your `.env` file in t
 
 ## Features
 
+![Screenshot 2024-05-05 153008](https://github.com/Atif-27/Alemeno/assets/116288316/8dab9933-554b-4403-b984-aec58ae1bd7c)
+
+
 ### Pages and Features
 
 #### Login
@@ -105,7 +108,8 @@ Ensure you have the following environment variables set in your `.env` file in t
 ### Advanced State Management
 
 - Utilizes Redux Toolkit for managing application state, including courses, authentication, and enrollment data.
+![Screenshot 2024-05-05 192555](https://github.com/Atif-27/Alemeno/assets/116288316/a140d218-2c02-4c6b-9aeb-d42fd0fae324)
 
 ## Demo Video
 
-Include a link to a demo video of the website showcasing all functionalities.
+[Demo Video](https://drive.google.com/file/d/1xG7EhZDqJpjmHQCbc_ZZcMHxZlYWROny/view?usp=sharing)
