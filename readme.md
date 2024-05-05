@@ -21,6 +21,55 @@ This project involves building a React-based web application it showcases a list
 - **JWT**: For secure authentication.
 - **Socket.IO**: For real-time communication between clients and server.
 
+## Project Setup
+
+### Running the Project
+
+#### Backend
+
+1. Navigate to the server directory:
+   ```bash
+   cd server
+   ```
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Start the server:
+   ```bash
+   npm run dev
+   ```
+4. Rename .env.sample to .env
+
+#### Frontend
+
+1. Navigate to the frontend directory:
+   ```bash
+   cd client
+   ```
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Start the development server:
+   ```bash
+   npm run dev
+   ```
+4. Rename .env.sample to .env
+
+### Environmental Variables
+
+Ensure you have the following environment variables set in your `.env` file in the server:
+
+- `PORT`: Port at which server is running
+- `MONGO_URI`: Your MongoDB connection string.
+- `JWT_SECRET`: Secret key for JWT token generation.
+
+Ensure you have the following environment variables set in your `.env` file in the client:
+
+- `VITE_BASE_URL`: Contains the base url of the backned
+- `VITE_SOCKET_URL`: Contain the socket url.
+
 ## Features
 
 ### Pages and Features
@@ -56,49 +105,6 @@ This project involves building a React-based web application it showcases a list
 ### Advanced State Management
 
 - Utilizes Redux Toolkit for managing application state, including courses, authentication, and enrollment data.
-
-## Project Setup
-
-### Running the Project
-
-#### Backend
-
-1. Navigate to the server directory:
-   ```bash
-   cd server
-   ```
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-3. Start the server:
-   ```bash
-   npm run dev
-   ```
-
-#### Frontend
-
-1. Navigate to the frontend directory:
-   ```bash
-   cd client
-   ```
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-3. Start the development server:
-   ```bash
-   npm run dev
-   ```
-4. Rename .env.sample to .env
-
-### Environmental Variables
-
-Ensure you have the following environment variables set in your `.env` file in the backend:
-
-- `PORT`: Port at which server is running
-- `MONGO_URI`: Your MongoDB connection string.
-- `JWT_SECRET`: Secret key for JWT token generation.
 
 ## Demo Video
 
